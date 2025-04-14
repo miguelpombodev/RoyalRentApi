@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7C262EC3-4D1F-4D39-B86A-5ECFD8E313AE}"
 	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{6BCB4A40-C17A-47BB-B614-9CDABAFBCF10}"
