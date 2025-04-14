@@ -1,0 +1,17 @@
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/bin/Debug/net9.0/RoyalRent.Infrastructure.deps.json
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/bin/Debug/net9.0/RoyalRent.Infrastructure.runtimeconfig.json
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/bin/Debug/net9.0/RoyalRent.Infrastructure.dll
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/bin/Debug/net9.0/RoyalRent.Infrastructure.pdb
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRent.Infrastructure.csproj.AssemblyReference.cache
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRent.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRent.Infrastructure.AssemblyInfoInputs.cache
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRent.Infrastructure.AssemblyInfo.cs
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRent.Infrastructure.csproj.CoreCompileInputs.cache
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRent.Infrastructure.dll
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/refint/RoyalRent.Infrastructure.dll
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRent.Infrastructure.pdb
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRent.Infrastructure.genruntimeconfig.cache
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/ref/RoyalRent.Infrastructure.dll
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/bin/Debug/net9.0/RoyalRent.Domain.dll
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/bin/Debug/net9.0/RoyalRent.Domain.pdb
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Infrastructure/obj/Debug/net9.0/RoyalRen.5DCAFAC5.Up2Date

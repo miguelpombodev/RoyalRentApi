@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7C262EC3-4D1F-4D39-B86A-5ECFD8E313AE}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{6BCB4A40-C17A-47BB-B614-9CDABAFBCF10}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6C65F673-F069-4A96-9F28-4EB7D3476C4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalRent.Domain", "RoyalRent.Domain\RoyalRent.Domain.csproj", "{5EEEC858-DF45-45B0-98BB-C8832100E22C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalRent.Application", "RoyalRent.Application\RoyalRent.Application.csproj", "{3176C8F1-8DC2-4DCD-A0AC-C0A031139D5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalRent.Infrastructure", "RoyalRent.Infrastructure\RoyalRent.Infrastructure.csproj", "{1F4CC0FC-E52B-46E8-B397-695DFFB0CAE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalRent.Presentation", "RoyalRent.Presentation\RoyalRent.Presentation.csproj", "{1AD35199-970A-4E97-A638-4C3B453DF390}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoyalRent.Web", "RoyalRent.Web\RoyalRent.Web.csproj", "{AE389FB9-868F-45E9-A24B-311C9448B355}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6BCB4A40-C17A-47BB-B614-9CDABAFBCF10} = {7C262EC3-4D1F-4D39-B86A-5ECFD8E313AE}
+		{6C65F673-F069-4A96-9F28-4EB7D3476C4A} = {7C262EC3-4D1F-4D39-B86A-5ECFD8E313AE}
+		{5EEEC858-DF45-45B0-98BB-C8832100E22C} = {6C65F673-F069-4A96-9F28-4EB7D3476C4A}
+		{3176C8F1-8DC2-4DCD-A0AC-C0A031139D5C} = {6C65F673-F069-4A96-9F28-4EB7D3476C4A}
+		{1F4CC0FC-E52B-46E8-B397-695DFFB0CAE8} = {6BCB4A40-C17A-47BB-B614-9CDABAFBCF10}
+		{1AD35199-970A-4E97-A638-4C3B453DF390} = {6BCB4A40-C17A-47BB-B614-9CDABAFBCF10}
+		{AE389FB9-868F-45E9-A24B-311C9448B355} = {7C262EC3-4D1F-4D39-B86A-5ECFD8E313AE}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5EEEC858-DF45-45B0-98BB-C8832100E22C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EEEC858-DF45-45B0-98BB-C8832100E22C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EEEC858-DF45-45B0-98BB-C8832100E22C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EEEC858-DF45-45B0-98BB-C8832100E22C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3176C8F1-8DC2-4DCD-A0AC-C0A031139D5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3176C8F1-8DC2-4DCD-A0AC-C0A031139D5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3176C8F1-8DC2-4DCD-A0AC-C0A031139D5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3176C8F1-8DC2-4DCD-A0AC-C0A031139D5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F4CC0FC-E52B-46E8-B397-695DFFB0CAE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4CC0FC-E52B-46E8-B397-695DFFB0CAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4CC0FC-E52B-46E8-B397-695DFFB0CAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4CC0FC-E52B-46E8-B397-695DFFB0CAE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AD35199-970A-4E97-A638-4C3B453DF390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AD35199-970A-4E97-A638-4C3B453DF390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AD35199-970A-4E97-A638-4C3B453DF390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AD35199-970A-4E97-A638-4C3B453DF390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE389FB9-868F-45E9-A24B-311C9448B355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE389FB9-868F-45E9-A24B-311C9448B355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE389FB9-868F-45E9-A24B-311C9448B355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE389FB9-868F-45E9-A24B-311C9448B355}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

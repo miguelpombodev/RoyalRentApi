@@ -1,0 +1,11 @@
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/bin/Debug/net9.0/RoyalRent.Domain.deps.json
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/bin/Debug/net9.0/RoyalRent.Domain.dll
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/bin/Debug/net9.0/RoyalRent.Domain.pdb
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/obj/Debug/net9.0/RoyalRent.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/obj/Debug/net9.0/RoyalRent.Domain.AssemblyInfoInputs.cache
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/obj/Debug/net9.0/RoyalRent.Domain.AssemblyInfo.cs
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/obj/Debug/net9.0/RoyalRent.Domain.csproj.CoreCompileInputs.cache
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/obj/Debug/net9.0/RoyalRent.Domain.dll
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/obj/Debug/net9.0/refint/RoyalRent.Domain.dll
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/obj/Debug/net9.0/RoyalRent.Domain.pdb
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Domain/obj/Debug/net9.0/ref/RoyalRent.Domain.dll
