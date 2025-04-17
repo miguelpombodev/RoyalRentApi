@@ -59,6 +59,7 @@
             "Microsoft.AspNetCore.Mvc.Core": "2.3.0",
             "Microsoft.EntityFrameworkCore": "9.0.4",
             "Microsoft.EntityFrameworkCore.Design": "9.0.4",
+            "Microsoft.EntityFrameworkCore.Relational": "9.0.4",
             "Microsoft.Extensions.Configuration": "9.0.4",
             "Microsoft.Extensions.Configuration.Json": "9.0.4",
             "Microsoft.NET.Test.Sdk": "17.8.0",
