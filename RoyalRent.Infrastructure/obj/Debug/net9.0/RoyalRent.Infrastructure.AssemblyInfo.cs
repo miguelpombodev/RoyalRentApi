@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RoyalRent.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e4f3ded6d4e5c93351840d04005653943b94222")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9418bbc987807677e54f12c0d5ebf3b26e82615e")]
 [assembly: System.Reflection.AssemblyProductAttribute("RoyalRent.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RoyalRent.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
