@@ -9,7 +9,8 @@
       "RoyalRent.Presentation/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.Core": "2.3.0",
-          "RoyalRent.Application": "1.0.0"
+          "RoyalRent.Application": "1.0.0",
+          "SonarAnalyzer.CSharp": "10.8.0.113526"
         },
         "runtime": {
           "RoyalRent.Presentation.dll": {}
@@ -439,6 +440,7 @@
           "Microsoft.NETCore.Targets": "1.0.1"
         }
       },
+      "SonarAnalyzer.CSharp/10.8.0.113526": {},
       "System.AppContext/4.1.0": {
         "dependencies": {
           "System.Runtime": "4.1.0"
@@ -996,6 +998,13 @@
       "sha512": "sha512-QfS/nQI7k/BLgmLrw7qm7YBoULEvgWnPI+cYsbfCVFTW8Aj+i8JhccxcFMu1RWms0YZzF+UHguNBK4Qn89e2Sg==",
       "path": "runtime.native.system/4.0.0",
       "hashPath": "runtime.native.system.4.0.0.nupkg.sha512"
+    },
+    "SonarAnalyzer.CSharp/10.8.0.113526": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2+Gk4w467coeL9ozQlAN9y0mwMj3XmlacFYZE0Ptz4LC4EkmMPwY5ygYPkwg9/xJ1SIShmoAC+5Sinb3khHDng==",
+      "path": "sonaranalyzer.csharp/10.8.0.113526",
+      "hashPath": "sonaranalyzer.csharp.10.8.0.113526.nupkg.sha512"
     },
     "System.AppContext/4.1.0": {
       "type": "package",

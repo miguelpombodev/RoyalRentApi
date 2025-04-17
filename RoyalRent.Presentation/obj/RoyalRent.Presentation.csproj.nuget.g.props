@@ -7,12 +7,13 @@
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">/home/pombo/.nuget/packages/</NuGetPackageRoot>
     <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">/home/pombo/.nuget/packages/</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
-    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.12.2</NuGetToolVersion>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.13.2</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="/home/pombo/.nuget/packages/" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgSonarAnalyzer_CSharp Condition=" '$(PkgSonarAnalyzer_CSharp)' == '' ">/home/pombo/.nuget/packages/sonaranalyzer.csharp/10.8.0.113526</PkgSonarAnalyzer_CSharp>
     <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">/home/pombo/.nuget/packages/newtonsoft.json/9.0.1</PkgNewtonsoft_Json>
   </PropertyGroup>
 </Project>

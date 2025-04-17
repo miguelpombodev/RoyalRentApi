@@ -4,7 +4,7 @@ using Serilog;
 
 namespace RoyalRent.Web;
 
-public class Program
+public static class Program
 {
     public static async Task Main(string[] args)
     {
@@ -18,7 +18,7 @@ public class Program
         var buildedHost = webHost.Build();
 
         await ApplyMigrations(buildedHost.Services);
-        
+
         await buildedHost.RunAsync();
     }
 

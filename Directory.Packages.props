@@ -1,0 +1,33 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- WEB LAYER -->
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.8.0.113526" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="1.6.24" />
+    <PackageVersion Include="Scrutor" Version="6.0.1" />
+    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.1" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.Swagger" Version="8.1.1" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.1" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.1" />
+    <!-- INFRASTRUCTURE LAYER -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.4" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <!-- PRESENTATION LAYER -->
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+    <!-- TESTS LAYER -->
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageVersion Include="xunit" Version="2.5.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+</Project>

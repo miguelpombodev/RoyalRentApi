@@ -8,15 +8,12 @@ namespace RoyalRent.Presentation.Controllers;
 public class AccountController : ControllerBase
 {
     /// <summary>
-    /// Gets user informations
+    /// Gets user information
     /// </summary>
     /// <returns>The user specified by identifier, if exists</returns>
     [HttpGet]
-    public async Task<IActionResult> GetUser()
+    public IActionResult GetUser()
     {
-        return StatusCode(StatusCodes.Status200OK, new
-        {
-            name= "Jonh Doe"
-        });
+        return StatusCode(StatusCodes.Status200OK, new { name = "Jonh Doe" });
     }
 }

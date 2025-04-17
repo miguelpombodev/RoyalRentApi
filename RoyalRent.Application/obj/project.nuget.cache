@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xVfVi2L8Ymk=",
+  "dgSpecHash": "S537BD1B0nM=",
   "success": true,
   "projectFilePath": "/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Application/RoyalRent.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/pombo/.nuget/packages/sonaranalyzer.csharp/10.8.0.113526/sonaranalyzer.csharp.10.8.0.113526.nupkg.sha512"
+  ],
   "logs": []
 }

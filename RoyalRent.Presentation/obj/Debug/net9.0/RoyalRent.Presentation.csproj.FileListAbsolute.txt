@@ -8,6 +8,7 @@
 /home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Presentation/obj/Debug/net9.0/RoyalRent.Presentation.AssemblyInfoInputs.cache
 /home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Presentation/obj/Debug/net9.0/RoyalRent.Presentation.AssemblyInfo.cs
 /home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Presentation/obj/Debug/net9.0/RoyalRent.Presentation.csproj.CoreCompileInputs.cache
+/home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Presentation/obj/Debug/net9.0/RoyalRent.Presentation.sourcelink.json
 /home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Presentation/obj/Debug/net9.0/RoyalRen.26FF384C.Up2Date
 /home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Presentation/obj/Debug/net9.0/RoyalRent.Presentation.dll
 /home/pombo/Dev/C#/RoyalRentApi/RoyalRent.Presentation/obj/Debug/net9.0/refint/RoyalRent.Presentation.dll
