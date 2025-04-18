@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RoyalRent.Application\RoyalRent.Application.csproj" />
       <ProjectReference Include="..\RoyalRent.Domain\RoyalRent.Domain.csproj" />
     </ItemGroup>
 

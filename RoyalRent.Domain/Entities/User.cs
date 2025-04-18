@@ -2,12 +2,20 @@ namespace RoyalRent.Domain.Entities;
 
 public class User : BaseEntity
 {
-    public string Name { get; set; } = default!;
-    public string Cpf { get; set; } = default!;
-    public string Email { get; set; } = default!;
-    public string Telephone { get; set; } = default!;
-    public string? Gender { get; set; } = default;
+    public User(string name, string cpf, string email, string telephone, char? gender = default)
+    {
+        Name = name;
+        Cpf = cpf;
+        Email = email;
+        Telephone = telephone;
+        Gender = gender;
+    }
 
+    public string Name { get; set; }
+    public string Cpf { get; set; }
+    public string Email { get; set; }
+    public string Telephone { get; set; }
+    public char? Gender { get; set; }
     public UserAddress? UserAddress { get; set; }
     public UserDriverLicense? UserDriverLicense { get; set; }
 }

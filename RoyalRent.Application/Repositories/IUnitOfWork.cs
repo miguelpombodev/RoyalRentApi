@@ -1,4 +1,4 @@
-namespace RoyalRent.Domain.Repositories;
+namespace RoyalRent.Application.Repositories;
 
 public interface IUnitOfWork
 {

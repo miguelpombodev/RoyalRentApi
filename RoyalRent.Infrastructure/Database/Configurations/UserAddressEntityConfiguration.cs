@@ -23,9 +23,9 @@ public class UserAddressEntityConfiguration : IEntityTypeConfiguration<UserAddre
         builder.Property(address => address.FederativeUnit).HasColumnName("UF").HasColumnType("CHAR(2)");
         builder.Property(address => address.UserId).HasColumnName("user_id").HasColumnType("UUID");
         builder.Property(address => address.CreatedOn).HasColumnName("created_on")
-            .HasColumnType("TIMESTAMP WITH TIME ZONE").ValueGeneratedOnAdd();
+            .HasColumnType("TIMESTAMP WITH TIME ZONE").IsRequired();
         builder.Property(address => address.UpdatedOn).HasColumnName("updated_on")
-            .HasColumnType("TIMESTAMP WITH TIME ZONE").ValueGeneratedOnAddOrUpdate();
+            .HasColumnType("TIMESTAMP WITH TIME ZONE").IsRequired();
 
         builder.HasIndex(address => new { address.Cep, address.Address, address.City, address.Id });
 

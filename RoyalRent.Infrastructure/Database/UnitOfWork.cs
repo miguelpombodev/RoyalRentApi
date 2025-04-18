@@ -1,4 +1,4 @@
-using RoyalRent.Domain.Repositories;
+using RoyalRent.Application.Repositories;
 
 namespace RoyalRent.Infrastructure.Database;
 

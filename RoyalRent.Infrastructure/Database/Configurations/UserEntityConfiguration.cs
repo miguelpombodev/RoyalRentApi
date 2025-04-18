@@ -19,9 +19,9 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<User>
         builder.Property(user => user.Gender).HasColumnName("gender").HasColumnType("CHAR(1)").IsRequired();
         builder.Property(user => user.Telephone).HasColumnName("phone").HasColumnType("CHAR(12)").IsRequired();
         builder.Property(user => user.CreatedOn).HasColumnName("created_on")
-            .HasColumnType("TIMESTAMP WITH TIME ZONE").ValueGeneratedOnAdd();
+            .HasColumnType("TIMESTAMP WITH TIME ZONE").IsRequired();
         builder.Property(user => user.UpdatedOn).HasColumnName("updated_on")
-            .HasColumnType("TIMESTAMP WITH TIME ZONE").ValueGeneratedOnAddOrUpdate();
+            .HasColumnType("TIMESTAMP WITH TIME ZONE").IsRequired();
 
         builder.HasIndex(user => new { user.Email, user.Cpf, user.Telephone });
     }

@@ -20,9 +20,9 @@ public class UserDriverLicenseEntityConfiguration : IEntityTypeConfiguration<Use
         builder.Property(license => license.State).HasColumnName("state").HasColumnType("CHAR(2)");
         builder.Property(license => license.UserId).HasColumnName("user_id").HasColumnType("UUID");
         builder.Property(license => license.CreatedOn).HasColumnName("created_on")
-            .HasColumnType("TIMESTAMP WITH TIME ZONE").ValueGeneratedOnAdd();
+            .HasColumnType("TIMESTAMP WITH TIME ZONE").IsRequired();
         builder.Property(license => license.UpdatedOn).HasColumnName("updated_on")
-            .HasColumnType("TIMESTAMP WITH TIME ZONE").ValueGeneratedOnAddOrUpdate();
+            .HasColumnType("TIMESTAMP WITH TIME ZONE").IsRequired();
 
         builder.HasOne<User>(license => license.User).WithOne(user => user.UserDriverLicense)
             .HasForeignKey<UserDriverLicense>(license => license.UserId).HasConstraintName("FK_USER_USER_LICENSE");

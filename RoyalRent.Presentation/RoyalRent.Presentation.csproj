@@ -11,6 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" />
+      <PackageReference Include="FluentValidation" />
+      <PackageReference Include="FluentValidation.AspNetCore" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core"/>
     </ItemGroup>
 

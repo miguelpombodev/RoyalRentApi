@@ -7,9 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Abstractions\" />
       <Folder Include="Cars\UseCases\" />
+      <Folder Include="DTOs\Outputs\" />
+      <PackageReference Include="AutoMapper" />
       <Folder Include="Exceptions\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RoyalRent.Domain\RoyalRent.Domain.csproj" />
     </ItemGroup>
 
 </Project>

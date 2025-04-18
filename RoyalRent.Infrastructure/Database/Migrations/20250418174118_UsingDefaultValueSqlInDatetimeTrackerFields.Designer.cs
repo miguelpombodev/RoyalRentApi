@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RoyalRent.Infrastructure.Database;
@@ -11,9 +12,11 @@ using RoyalRent.Infrastructure.Database;
 namespace RoyalRent.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250418174118_UsingDefaultValueSqlInDatetimeTrackerFields")]
+    partial class UsingDefaultValueSqlInDatetimeTrackerFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,8 +38,10 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .HasColumnName("CPF");
 
                     b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP WITH TIME ZONE")
-                        .HasColumnName("created_on");
+                        .HasColumnName("created_on")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -60,8 +65,10 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .HasColumnName("phone");
 
                     b.Property<DateTime>("UpdatedOn")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP WITH TIME ZONE")
-                        .HasColumnName("updated_on");
+                        .HasColumnName("updated_on")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
 
@@ -92,8 +99,10 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .HasColumnName("city");
 
                     b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP WITH TIME ZONE")
-                        .HasColumnName("created_on");
+                        .HasColumnName("created_on")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("FederativeUnit")
                         .HasColumnType("CHAR(2)")
@@ -110,8 +119,10 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .HasColumnName("number");
 
                     b.Property<DateTime>("UpdatedOn")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP WITH TIME ZONE")
-                        .HasColumnName("updated_on");
+                        .HasColumnName("updated_on")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("UUID")
@@ -139,8 +150,10 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .HasColumnName("birthdate");
 
                     b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP WITH TIME ZONE")
-                        .HasColumnName("created_on");
+                        .HasColumnName("created_on")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<DateOnly?>("DocumentExpirationDate")
                         .HasColumnType("DATE")
@@ -158,8 +171,10 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .HasColumnName("state");
 
                     b.Property<DateTime>("UpdatedOn")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TIMESTAMP WITH TIME ZONE")
-                        .HasColumnName("updated_on");
+                        .HasColumnName("updated_on")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("UUID")

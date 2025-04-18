@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using RoyalRent.Application.Extensions;
 using RoyalRent.Infrastructure.Database;
+using RoyalRent.Presentation.Extensions;
 using Scrutor;
 using Serilog;
 
@@ -35,9 +37,9 @@ public class Startup
             .WithScopedLifetime()
         );
 
-        var presentationAssembly = Presentation.AssemblyReference.Assembly;
-
-        services.AddControllers().AddApplicationPart(presentationAssembly);
+        services
+            .addAplicationCollection()
+            .addPresentationCollection();
 
         services.AddSwaggerGen(config =>
         {
