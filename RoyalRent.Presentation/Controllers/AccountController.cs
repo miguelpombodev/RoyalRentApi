@@ -1,9 +1,10 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RoyalRent.Application.Abstractions.Accounts;
 using RoyalRent.Application.DTOs;
+using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Requests;
+using RoyalRent.Presentation.Accounts.Responses;
 
 namespace RoyalRent.Presentation.Controllers;
 
@@ -11,32 +12,42 @@ namespace RoyalRent.Presentation.Controllers;
 [Route("api/account")]
 public class AccountController : ControllerBase
 {
-    private readonly ICreateAccountService _createAccountService;
+    private readonly IAccountHandler _accountHandler;
     private readonly IMapper _mapper;
 
-    public AccountController(IMapper mapper, ICreateAccountService createAccountService)
+    public AccountController(IMapper mapper, IAccountHandler accountHandler)
     {
         _mapper = mapper;
-        _createAccountService = createAccountService;
+        _accountHandler = accountHandler;
     }
+
+    [HttpPost]
+    public async Task<IResult> SaveAccount(CreateAccountRequest body)
+    {
+        var dto = _mapper.Map<CreateAccountDto>(body);
+
+        await _accountHandler.SaveAccountAsync(dto);
+
+        return Results.CreatedAtRoute("/api/account/");
+    }
+
     /// <summary>
     /// Gets user information
     /// </summary>
     /// <returns>The user specified by identifier, if exists</returns>
     [HttpGet]
-    public IActionResult GetUser()
+    public async Task<IActionResult> GetAccountInformation(Guid id)
     {
-        return StatusCode(StatusCodes.Status200OK, new { name = "Jonh Doe" });
-    }
+        var user = await _accountHandler.GetUserInformationAsync(id);
 
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> SaveAccount(CreateAccountRequest body)
-    {
-        var dto = _mapper.Map<CreateAccountDto>(body);
+        var mappedUserResponse = _mapper.Map<GetUserResponse>(user);
 
-        var user = await _createAccountService.ExecuteAsync(dto);
-
-        return StatusCode(StatusCodes.Status200OK, user);
+        return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
     }
 }
+

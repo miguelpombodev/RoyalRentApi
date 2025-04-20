@@ -38,8 +38,8 @@ public class Startup
         );
 
         services
-            .addAplicationCollection()
-            .addPresentationCollection();
+            .AddAplicationCollection()
+            .AddPresentationCollection();
 
         services.AddSwaggerGen(config =>
         {
