@@ -1,4 +1,6 @@
+using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Accounts;
+using RoyalRent.Application.Accounts.Errors;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Application.Repositories;
 using RoyalRent.Domain.Entities;
@@ -15,15 +17,12 @@ public class GetUserBasicInformationService : IGetUserBasicInformationService
     }
 
 
-    public async Task<User?> ExecuteGetByIdAsync(Guid id)
+    public async Task<Result<User>> ExecuteGetByIdAsync(Guid id)
     {
         var user = await _accountRepository.GetUserBasicInformationById(id);
 
-        if (user is null)
-        {
-            return null;
-        }
+        if (user is null) return Result<User>.Failure(AccountErrors.UserAccountNotFound);
 
-        return user;
+        return Result<User>.Success(user);
     }
 }

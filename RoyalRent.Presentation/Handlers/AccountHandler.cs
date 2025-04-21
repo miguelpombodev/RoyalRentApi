@@ -1,3 +1,4 @@
+using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Accounts;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Domain.Entities;
@@ -22,10 +23,10 @@ public class AccountHandler : IAccountHandler
         await _createAccountService.ExecuteAsync(request);
     }
 
-    public async Task<User?> GetUserInformationAsync(Guid id)
+    public async Task<Result<User>> GetUserInformationAsync(Guid id)
     {
-        var user = await _getUserBasicInformationService.ExecuteGetByIdAsync(id);
+        var result = await _getUserBasicInformationService.ExecuteGetByIdAsync(id);
 
-        return user;
+        return result;
     }
 }

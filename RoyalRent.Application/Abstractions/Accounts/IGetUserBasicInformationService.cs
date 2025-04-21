@@ -5,5 +5,5 @@ namespace RoyalRent.Application.Abstractions.Accounts;
 
 public interface IGetUserBasicInformationService
 {
-    Task<User?> ExecuteGetByIdAsync(Guid id);
+    Task<Result<User>> ExecuteGetByIdAsync(Guid id);
 }

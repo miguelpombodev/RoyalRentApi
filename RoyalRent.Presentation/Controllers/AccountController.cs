@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RoyalRent.Application.Accounts.Errors;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Requests;
@@ -38,16 +39,16 @@ public class AccountController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAccountInformation(Guid id)
     {
-        var user = await _accountHandler.GetUserInformationAsync(id);
+        var result = await _accountHandler.GetUserInformationAsync(id);
 
-        if (user == null)
+        if (result.IsFailure)
         {
-            return NotFound("User not found");
+            return StatusCode(result.Error.StatusCode,
+                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
         }
 
-        var mappedUserResponse = _mapper.Map<GetUserResponse>(user);
+        var mappedUserResponse = _mapper.Map<GetUserResponse>(result.Data);
 
         return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
     }
 }
-
