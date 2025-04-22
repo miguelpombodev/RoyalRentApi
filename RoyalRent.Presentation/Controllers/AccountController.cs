@@ -29,14 +29,14 @@ public class AccountController : ControllerBase
 
         await _accountHandler.SaveAccountAsync(dto);
 
-        return Results.CreatedAtRoute("/api/account/");
+        return Results.CreatedAtRoute("GetAccount");
     }
 
     /// <summary>
     /// Gets user information
     /// </summary>
     /// <returns>The user specified by identifier, if exists</returns>
-    [HttpGet]
+    [HttpGet(Name = "GetAccount")]
     public async Task<IActionResult> GetAccountInformation(Guid id)
     {
         var result = await _accountHandler.GetUserInformationAsync(id);
