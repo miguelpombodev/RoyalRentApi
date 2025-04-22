@@ -11,13 +11,22 @@
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector"/>
+        <PackageReference Include="FluentAssertions" />
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="Moq" />
         <PackageReference Include="xunit"/>
         <PackageReference Include="xunit.runner.visualstudio"/>
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RoyalRent.Application\RoyalRent.Application.csproj" />
+      <ProjectReference Include="..\RoyalRent.Domain\RoyalRent.Domain.csproj" />
+      <ProjectReference Include="..\RoyalRent.Infrastructure\RoyalRent.Infrastructure.csproj" />
+      <ProjectReference Include="..\RoyalRent.Presentation\RoyalRent.Presentation.csproj" />
     </ItemGroup>
 
 </Project>

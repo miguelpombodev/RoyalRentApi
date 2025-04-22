@@ -8,7 +8,7 @@
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=SpellingFilter/@EntryIndexedValue">Off</s:String>
 	
 	
-	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=2a10f700_002Dc86e_002D497b_002D8a66_002Dc90c35dbf254_0023RoyalRent_002EUnitTests/@EntryIndexedValue">True</s:Boolean>
+	
 	
 	
 	</wpf:ResourceDictionary>

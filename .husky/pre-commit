@@ -25,4 +25,4 @@ echo 'Building code'
 dotnet build
 
 echo 'Running tests'
-dotnet test
+dotnet test --logger:"console;verbosity=detailed"
