@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RoyalRent.Application.Accounts.Errors;
 using RoyalRent.Application.DTOs;
+using RoyalRent.Infrastructure.Abstractions;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Requests;
 using RoyalRent.Presentation.Accounts.Responses;
@@ -15,11 +16,13 @@ public class AccountController : ControllerBase
 {
     private readonly IAccountHandler _accountHandler;
     private readonly IMapper _mapper;
+    private readonly IDistribuitedCacheService _cacheService;
 
-    public AccountController(IMapper mapper, IAccountHandler accountHandler)
+    public AccountController(IMapper mapper, IAccountHandler accountHandler, IDistribuitedCacheService cacheService)
     {
         _mapper = mapper;
         _accountHandler = accountHandler;
+        _cacheService = cacheService;
     }
 
     [HttpPost]
@@ -39,6 +42,13 @@ public class AccountController : ControllerBase
     [HttpGet(Name = "GetAccount")]
     public async Task<IActionResult> GetAccountInformation(Guid id)
     {
+        var cachedUserResult = _cacheService.GetData<GetUserResponse>($"user_cached_{id}");
+
+        if (cachedUserResult is not null)
+        {
+            return StatusCode(StatusCodes.Status200OK, new { user = cachedUserResult });
+        }
+
         var result = await _accountHandler.GetUserInformationAsync(id);
 
         if (result.IsFailure)
@@ -48,6 +58,8 @@ public class AccountController : ControllerBase
         }
 
         var mappedUserResponse = _mapper.Map<GetUserResponse>(result.Data);
+
+        _cacheService.SetData($"user_cached_{id}", cachedUserResult);
 
         return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
     }

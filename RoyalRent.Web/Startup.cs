@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using RoyalRent.Application.Extensions;
 using RoyalRent.Infrastructure.Database;
+using RoyalRent.Infrastructure.Extensions;
 using RoyalRent.Presentation.Extensions;
 using Scrutor;
 using Serilog;
@@ -39,6 +40,7 @@ public class Startup
 
         services
             .AddAplicationCollection()
+            .AddInfrastructureCollection(Configuration)
             .AddPresentationCollection();
 
         services.AddSwaggerGen(config =>

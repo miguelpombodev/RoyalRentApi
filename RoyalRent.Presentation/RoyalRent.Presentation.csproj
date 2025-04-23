@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RoyalRent.Application\RoyalRent.Application.csproj" />
+      <ProjectReference Include="..\RoyalRent.Infrastructure\RoyalRent.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -13,9 +13,12 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
       <PackageReference Include="Microsoft.Extensions.Configuration"/>
       <PackageReference Include="Microsoft.Extensions.Configuration.Json"/>
+      <PackageReference Include="Newtonsoft.Json" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+      <PackageReference Include="StackExchange.Redis" />
     </ItemGroup>
 
     <ItemGroup>

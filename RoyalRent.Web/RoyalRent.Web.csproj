@@ -1,34 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\RoyalRent.Application\RoyalRent.Application.csproj" />
-      <ProjectReference Include="..\RoyalRent.Domain\RoyalRent.Domain.csproj" />
-      <ProjectReference Include="..\RoyalRent.Infrastructure\RoyalRent.Infrastructure.csproj" />
-      <ProjectReference Include="..\RoyalRent.Presentation\RoyalRent.Presentation.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RoyalRent.Application\RoyalRent.Application.csproj"/>
+    <ProjectReference Include="..\RoyalRent.Domain\RoyalRent.Domain.csproj"/>
+    <ProjectReference Include="..\RoyalRent.Infrastructure\RoyalRent.Infrastructure.csproj"/>
+    <ProjectReference Include="..\RoyalRent.Presentation\RoyalRent.Presentation.csproj"/>
+  </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.OpenApi"/>
-      <PackageReference Include="Scrutor"/>
-      <PackageReference Include="Serilog"/>
-      <PackageReference Include="Serilog.AspNetCore"/>
-      <PackageReference Include="Serilog.Extensions.Hosting"/>
-      <PackageReference Include="Serilog.Extensions.Logging"/>
-      <PackageReference Include="Serilog.Sinks.Console"/>
-      <PackageReference Include="Swashbuckle.AspNetCore.Swagger"/>
-      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen"/>
-      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI"/>
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.OpenApi"/>
+    <PackageReference Include="Scrutor"/>
+    <PackageReference Include="Serilog"/>
+    <PackageReference Include="Serilog.AspNetCore"/>
+    <PackageReference Include="Serilog.Extensions.Hosting"/>
+    <PackageReference Include="Serilog.Extensions.Logging"/>
+    <PackageReference Include="Serilog.Sinks.Console"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI"/>
+  </ItemGroup>
 
 </Project>
