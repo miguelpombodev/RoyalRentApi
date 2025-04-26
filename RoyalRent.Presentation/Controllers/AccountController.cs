@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RoyalRent.Application.Accounts.Errors;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Infrastructure.Abstractions;
 using RoyalRent.Presentation.Abstractions;
@@ -35,6 +34,16 @@ public class AccountController : ControllerBase
         return Results.CreatedAtRoute("GetAccount");
     }
 
+    [HttpPost("driver_license/{userId:guid}")]
+    public async Task<IResult> SaveAccountDriverLicense(CreateUserDriverLicenseDto body, Guid userId)
+    {
+        var dto = _mapper.Map<CreateUserDriverLicenseDto>(body);
+
+        await _accountHandler.SaveDriverLicense(dto, userId);
+
+        return Results.CreatedAtRoute("GetDriverLicense");
+    }
+
     /// <summary>
     /// Gets user information
     /// </summary>
@@ -62,5 +71,11 @@ public class AccountController : ControllerBase
         _cacheService.SetData($"user_cached_{id}", cachedUserResult);
 
         return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
+    }
+
+    [HttpGet(Name = "GetDriverLicense")]
+    public IActionResult GetAccountDriverLicenseInformation(Guid id)
+    {
+        return StatusCode(StatusCodes.Status200OK, new { user = "example" });
     }
 }

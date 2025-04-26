@@ -12,6 +12,7 @@ public static class AddApplication
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<ICreateAccountService, CreateAccountService>();
         services.AddScoped<IGetUserBasicInformationService, GetUserBasicInformationService>();
+        services.AddScoped<ICreateDriverLicenseService, CreateDriverLicenseService>();
 
         return services;
     }

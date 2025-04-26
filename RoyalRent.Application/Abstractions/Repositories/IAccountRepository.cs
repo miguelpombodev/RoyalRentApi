@@ -8,4 +8,7 @@ public interface IAccountRepository
     Task<User> AddAccount(User user);
     Task<User> UpdateAccount(User user);
     Task<User> DeleteAccount(User user);
+    Task<UserDriverLicense> AddDriverLicense(UserDriverLicense userDriverLicense);
+    Task<UserDriverLicense> UpdateDriverLicense(UserDriverLicense userDriverLicense);
+    Task<UserDriverLicense> GetDriverLicense(Guid id);
 }

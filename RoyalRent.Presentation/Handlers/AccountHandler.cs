@@ -11,13 +11,18 @@ public class AccountHandler : IAccountHandler
 {
     private readonly ICreateAccountService _createAccountService;
     private readonly IGetUserBasicInformationService _getUserBasicInformationService;
+    private readonly ICreateDriverLicenseService _addDriverLicenseService;
 
     public AccountHandler(ICreateAccountService createAccountService,
-        IGetUserBasicInformationService getUserBasicInformationService)
+        IGetUserBasicInformationService getUserBasicInformationService,
+        ICreateDriverLicenseService addDriverLicenseService
+    )
     {
         _createAccountService = createAccountService;
         _getUserBasicInformationService = getUserBasicInformationService;
+        _addDriverLicenseService = addDriverLicenseService;
     }
+
     public async Task SaveAccountAsync(CreateAccountDto request)
     {
         await _createAccountService.ExecuteAsync(request);
@@ -26,6 +31,13 @@ public class AccountHandler : IAccountHandler
     public async Task<Result<User>> GetUserInformationAsync(Guid id)
     {
         var result = await _getUserBasicInformationService.ExecuteGetByIdAsync(id);
+
+        return result;
+    }
+
+    public async Task<Result<string>> SaveDriverLicense(CreateUserDriverLicenseDto request, Guid userId)
+    {
+        var result = await _addDriverLicenseService.ExecuteAsync(request, userId);
 
         return result;
     }

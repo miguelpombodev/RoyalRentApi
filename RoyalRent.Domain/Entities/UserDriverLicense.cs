@@ -2,12 +2,23 @@ namespace RoyalRent.Domain.Entities;
 
 public class UserDriverLicense : BaseEntity
 {
-    public string? RG { get; set; } = null;
-    public DateOnly? BirthDate { get; set; } = null;
-    public string? DriverLicenseNumber { get; set; } = null;
-    public DateOnly? DocumentExpirationDate { get; set; } = null;
-    public string? State { get; set; } = null;
-    public Guid? UserId { get; set; } = default!;
+    public UserDriverLicense(string rg, DateOnly birthDate, string driverLicenseNumber,
+        DateOnly documentExpirationDate, string state, Guid userId)
+    {
+        RG = rg;
+        BirthDate = birthDate;
+        DriverLicenseNumber = driverLicenseNumber;
+        DocumentExpirationDate = documentExpirationDate;
+        State = state;
+        UserId = userId;
+    }
+
+    public string RG { get; set; }
+    public DateOnly BirthDate { get; set; }
+    public string DriverLicenseNumber { get; set; }
+    public DateOnly DocumentExpirationDate { get; set; }
+    public string State { get; set; }
+    public Guid UserId { get; set; }
 
     public User? User { get; set; }
 }
