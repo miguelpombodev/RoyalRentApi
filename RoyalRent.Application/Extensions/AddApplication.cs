@@ -13,6 +13,7 @@ public static class AddApplication
         services.AddScoped<ICreateAccountService, CreateAccountService>();
         services.AddScoped<IGetUserBasicInformationService, GetUserBasicInformationService>();
         services.AddScoped<ICreateDriverLicenseService, CreateDriverLicenseService>();
+        services.AddScoped<ILoginService, LoginService>();
 
         return services;
     }

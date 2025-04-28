@@ -1,8 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Application.DTOs;
-using RoyalRent.Infrastructure.Abstractions;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Requests;
 using RoyalRent.Presentation.Accounts.Responses;
@@ -25,13 +25,19 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IResult> SaveAccount(CreateAccountRequest body)
+    public async Task<IActionResult> SaveAccount(CreateAccountRequest body)
     {
         var dto = _mapper.Map<CreateAccountDto>(body);
 
-        await _accountHandler.SaveAccountAsync(dto);
+        var result = await _accountHandler.SaveAccountAsync(dto);
 
-        return Results.CreatedAtRoute("GetAccount");
+        if (result.IsFailure)
+        {
+            return StatusCode(result.Error.StatusCode,
+                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
+        }
+
+        return CreatedAtAction(nameof(GetAccountInformation), new { status = "success" });
     }
 
     [HttpPost("driver_license/{userId:guid}")]
@@ -77,5 +83,22 @@ public class AccountController : ControllerBase
     public IActionResult GetAccountDriverLicenseInformation(Guid id)
     {
         return StatusCode(StatusCodes.Status200OK, new { user = "example" });
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginAccountRequest body)
+    {
+        var result = await _accountHandler.Login(body);
+
+        if (result.IsFailure)
+        {
+            return StatusCode(result.Error.StatusCode,
+                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
+        }
+
+        return StatusCode(StatusCodes.Status200OK, new
+        {
+            token = result.Data
+        });
     }
 }

@@ -11,7 +11,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<CreateAccountRequest, CreateAccountDto>().ConstructUsing(body => new CreateAccountDto(
-            body.Name, body.Cpf, body.Email, body.Telephone, body.Gender
+            body.Name, body.Cpf, body.Email, body.Telephone, body.Gender, body.password
         ));
         CreateMap<CreateAccountDriverLicenseRequest, CreateUserDriverLicenseDto>()
             .ConstructUsing(body => new CreateUserDriverLicenseDto(body.Rg, body.BirthDate, body.DriverLicenseNumber,

@@ -1,4 +1,4 @@
-namespace RoyalRent.Infrastructure.Abstractions;
+namespace RoyalRent.Application.Abstractions.Providers;
 
 public interface IDistribuitedCacheService
 {

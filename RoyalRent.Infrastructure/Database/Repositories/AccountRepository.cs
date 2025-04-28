@@ -7,11 +7,13 @@ namespace RoyalRent.Infrastructure.Database.Repositories;
 public class AccountRepository : IAccountRepository
 {
     private readonly DbSet<User> _userContext;
+    private readonly DbSet<UserPassword> _userPasswordContext;
     private readonly DbSet<UserDriverLicense> _userDriverLicenseContext;
 
     public AccountRepository(ApiDbContext context)
     {
         _userContext = context.Set<User>();
+        _userPasswordContext = context.Set<UserPassword>();
         _userDriverLicenseContext = context.Set<UserDriverLicense>();
     }
 
@@ -22,11 +24,26 @@ public class AccountRepository : IAccountRepository
         return user;
     }
 
-    public async Task<User> AddAccount(User user)
+    public async Task<User?> GetUserByEmail(string email)
+    {
+        var user = await _userContext.FirstOrDefaultAsync(user => user.Email == email);
+
+        return user;
+    }
+
+    public async Task<UserPassword?> GetLastActualUserPassword(Guid userId)
+    {
+        var userLastActualPassword = await _userPasswordContext.FirstOrDefaultAsync(userPassword => userPassword.UserId == userId && userPassword.ActualPassword);
+
+        return userLastActualPassword;
+    }
+
+    public async Task<Tuple<User, UserPassword>> AddAccount(User user, UserPassword userPassword)
     {
         var addedEntry = await _userContext.AddAsync(user);
+        var addedUserPasswordEntry = await _userPasswordContext.AddAsync(userPassword);
 
-        return addedEntry.Entity;
+        return Tuple.Create(addedEntry.Entity, addedUserPasswordEntry.Entity);
     }
 
     public Task<User> UpdateAccount(User user)

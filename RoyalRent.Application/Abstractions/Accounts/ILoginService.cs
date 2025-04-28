@@ -3,7 +3,7 @@ using RoyalRent.Domain.Entities;
 
 namespace RoyalRent.Application.Abstractions.Accounts;
 
-public interface ICreateAccountService
+public interface ILoginService
 {
-    Task<Result<User>> ExecuteAsync(CreateAccountDto account);
+    Task<Result<string>> ExecuteAsync(LoginDto account);
 }

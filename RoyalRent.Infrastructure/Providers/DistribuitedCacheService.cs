@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
-using RoyalRent.Infrastructure.Abstractions;
+using RoyalRent.Application.Abstractions.Providers;
 
 namespace RoyalRent.Infrastructure.Providers;
 
