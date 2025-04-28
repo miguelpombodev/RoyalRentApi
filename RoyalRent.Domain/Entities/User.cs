@@ -18,4 +18,5 @@ public class User : BaseEntity
     public char? Gender { get; set; }
     public UserAddress? UserAddress { get; set; }
     public UserDriverLicense? UserDriverLicense { get; set; }
+    public ICollection<UserPassword> UserPasswords { get; set; } = new List<UserPassword>();
 }

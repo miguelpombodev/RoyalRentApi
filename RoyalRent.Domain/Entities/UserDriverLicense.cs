@@ -5,7 +5,7 @@ public class UserDriverLicense : BaseEntity
     public UserDriverLicense(string rg, DateOnly birthDate, string driverLicenseNumber,
         DateOnly documentExpirationDate, string state, Guid userId)
     {
-        RG = rg;
+        Rg = rg;
         BirthDate = birthDate;
         DriverLicenseNumber = driverLicenseNumber;
         DocumentExpirationDate = documentExpirationDate;
@@ -13,7 +13,7 @@ public class UserDriverLicense : BaseEntity
         UserId = userId;
     }
 
-    public string RG { get; set; }
+    public string Rg { get; set; }
     public DateOnly BirthDate { get; set; }
     public string DriverLicenseNumber { get; set; }
     public DateOnly DocumentExpirationDate { get; set; }

@@ -73,7 +73,7 @@ public class AccountController : ControllerBase
         return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
     }
 
-    [HttpGet(Name = "GetDriverLicense")]
+    [HttpGet("/license", Name = "GetDriverLicense")]
     public IActionResult GetAccountDriverLicenseInformation(Guid id)
     {
         return StatusCode(StatusCodes.Status200OK, new { user = "example" });
