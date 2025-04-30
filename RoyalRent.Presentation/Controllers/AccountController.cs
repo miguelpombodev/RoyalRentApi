@@ -15,13 +15,11 @@ public class AccountController : ControllerBase
 {
     private readonly IAccountHandler _accountHandler;
     private readonly IMapper _mapper;
-    private readonly IDistribuitedCacheService _cacheService;
 
-    public AccountController(IMapper mapper, IAccountHandler accountHandler, IDistribuitedCacheService cacheService)
+    public AccountController(IMapper mapper, IAccountHandler accountHandler)
     {
         _mapper = mapper;
         _accountHandler = accountHandler;
-        _cacheService = cacheService;
     }
 
     [HttpPost]
@@ -37,52 +35,8 @@ public class AccountController : ControllerBase
                 new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
         }
 
-        return CreatedAtAction(nameof(GetAccountInformation), new { status = "success" });
-    }
-
-    [HttpPost("driver_license/{userId:guid}")]
-    public async Task<IResult> SaveAccountDriverLicense(CreateUserDriverLicenseDto body, Guid userId)
-    {
-        var dto = _mapper.Map<CreateUserDriverLicenseDto>(body);
-
-        await _accountHandler.SaveDriverLicense(dto, userId);
-
-        return Results.CreatedAtRoute("GetDriverLicense");
-    }
-
-    /// <summary>
-    /// Gets user information
-    /// </summary>
-    /// <returns>The user specified by identifier, if exists</returns>
-    [HttpGet(Name = "GetAccount")]
-    public async Task<IActionResult> GetAccountInformation(Guid id)
-    {
-        var cachedUserResult = _cacheService.GetData<GetUserResponse>($"user_cached_{id}");
-
-        if (cachedUserResult is not null)
-        {
-            return StatusCode(StatusCodes.Status200OK, new { user = cachedUserResult });
-        }
-
-        var result = await _accountHandler.GetUserInformationAsync(id);
-
-        if (result.IsFailure)
-        {
-            return StatusCode(result.Error.StatusCode,
-                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
-        }
-
-        var mappedUserResponse = _mapper.Map<GetUserResponse>(result.Data);
-
-        _cacheService.SetData($"user_cached_{id}", cachedUserResult);
-
-        return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
-    }
-
-    [HttpGet("/license", Name = "GetDriverLicense")]
-    public IActionResult GetAccountDriverLicenseInformation(Guid id)
-    {
-        return StatusCode(StatusCodes.Status200OK, new { user = "example" });
+        return CreatedAtAction(nameof(AuthenticatedAccountController.GetAccountInformation),
+            new { status = "success" });
     }
 
     [HttpPost("login")]
@@ -96,9 +50,53 @@ public class AccountController : ControllerBase
                 new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
         }
 
-        return StatusCode(StatusCodes.Status200OK, new
-        {
-            token = result.Data
-        });
+        SetRefreshTokenCookie(result.Data!.RefreshToken);
+
+        return StatusCode(StatusCodes.Status200OK, new { token = result.Data.AccessToken });
+    }
+
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> GenerateRefreshToken()
+    {
+        var refreshToken = Request.Cookies["refresh_token"];
+        if (string.IsNullOrEmpty(refreshToken))
+            StatusCode(StatusCodes.Status401Unauthorized, new { status = "Missing Refresh Token" });
+
+        var result = await _accountHandler.GenerateRefreshTokenHandler(refreshToken!);
+
+        if (result.IsFailure)
+            return StatusCode(result.Error.StatusCode,
+                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
+
+        SetRefreshTokenCookie(result.Data!.RefreshToken);
+        return StatusCode(StatusCodes.Status200OK, new { token = result.Data.AccessToken });
+    }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var refreshToken = Request.Cookies["refresh_token"];
+        if (string.IsNullOrEmpty(refreshToken))
+            StatusCode(StatusCodes.Status401Unauthorized, new { status = "Missing Refresh Token" });
+
+        var result = await _accountHandler.LogoutHandler(refreshToken!);
+
+        if (result.IsFailure)
+            return StatusCode(result.Error.StatusCode,
+                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
+
+        return StatusCode(StatusCodes.Status200OK, new { status = "success" });
+    }
+
+    private void SetRefreshTokenCookie(string refreshToken)
+    {
+        Response.Cookies.Append("refresh_token", refreshToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddMinutes(60)
+            });
     }
 }

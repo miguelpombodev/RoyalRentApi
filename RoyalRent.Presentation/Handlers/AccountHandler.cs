@@ -1,6 +1,8 @@
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Accounts;
+using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Application.DTOs;
+using RoyalRent.Application.DTOs.Outputs;
 using RoyalRent.Domain.Entities;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Requests;
@@ -13,17 +15,20 @@ public class AccountHandler : IAccountHandler
     private readonly IGetUserBasicInformationService _getUserBasicInformationService;
     private readonly ICreateDriverLicenseService _addDriverLicenseService;
     private readonly ILoginService _loginService;
+    private readonly IAuthenticationProvider _authProvider;
 
     public AccountHandler(ICreateAccountService createAccountService,
         IGetUserBasicInformationService getUserBasicInformationService,
         ICreateDriverLicenseService addDriverLicenseService,
-        ILoginService loginService
+        ILoginService loginService,
+        IAuthenticationProvider authProvider
     )
     {
         _createAccountService = createAccountService;
         _getUserBasicInformationService = getUserBasicInformationService;
         _addDriverLicenseService = addDriverLicenseService;
         _loginService = loginService;
+        _authProvider = authProvider;
     }
 
     public async Task<Result<User>> SaveAccountAsync(CreateAccountDto request)
@@ -45,9 +50,23 @@ public class AccountHandler : IAccountHandler
         return result;
     }
 
-    public async Task<Result<string>> Login(LoginAccountRequest body)
+    public async Task<Result<AuthResult>> Login(LoginAccountRequest body)
     {
         var result = await _loginService.ExecuteAsync(body);
+
+        return result;
+    }
+
+    public async Task<Result<AuthResult>> GenerateRefreshTokenHandler(string refreshToken)
+    {
+        var result = await _authProvider.RefreshTokenAsync(refreshToken);
+
+        return result;
+    }
+
+    public async Task<Result<bool>> LogoutHandler(string refreshToken)
+    {
+        var result = await _authProvider.RevokeRefreshTokenAsync(refreshToken);
 
         return result;
     }

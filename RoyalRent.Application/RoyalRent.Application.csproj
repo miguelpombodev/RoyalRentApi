@@ -9,7 +9,6 @@
 
     <ItemGroup>
       <Folder Include="Cars\UseCases\" />
-      <Folder Include="DTOs\Outputs\" />
       <PackageReference Include="AutoMapper" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
     </ItemGroup>

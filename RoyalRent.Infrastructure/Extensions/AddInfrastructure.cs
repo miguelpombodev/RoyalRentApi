@@ -2,20 +2,28 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Infrastructure.Providers;
+using StackExchange.Redis;
 
 namespace RoyalRent.Infrastructure.Extensions;
 
 public static class AddInfrastructure
 {
-    public static IServiceCollection AddInfrastructureCollection(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureCollection(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddSingleton<IDistribuitedCacheService, DistribuitedCacheService>();
         services.AddSingleton<IPasswordHasherProvider, PasswordHasherProvider>();
-        services.AddSingleton<ITokenProvider, TokenProvider>();
+        services.AddScoped<ITokenProvider, TokenProvider>();
+        services.AddScoped<IAuthenticationProvider, AuthenticationProvider>();
+
+        var redisConnectionString = configuration.GetConnectionString("RedisConnection")!;
+
+        var redisConnection = ConnectionMultiplexer.Connect(redisConnectionString);
+        services.AddSingleton<IConnectionMultiplexer>(redisConnection);
 
         services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = configuration.GetConnectionString("RedisConnection");
+            options.Configuration = redisConnectionString;
             options.InstanceName = "RoyalRentRedis";
         });
 
