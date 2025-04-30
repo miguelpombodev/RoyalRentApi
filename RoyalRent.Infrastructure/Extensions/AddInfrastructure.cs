@@ -11,7 +11,7 @@ public static class AddInfrastructure
     public static IServiceCollection AddInfrastructureCollection(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddSingleton<IDistribuitedCacheService, DistribuitedCacheService>();
+        services.AddSingleton<IDistribuitedCacheProvider, DistribuitedCacheProvider>();
         services.AddSingleton<IPasswordHasherProvider, PasswordHasherProvider>();
         services.AddScoped<ITokenProvider, TokenProvider>();
         services.AddScoped<IAuthenticationProvider, AuthenticationProvider>();

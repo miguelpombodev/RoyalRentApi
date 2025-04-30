@@ -14,14 +14,14 @@ public class AuthenticatedAccountController : ControllerBase
 {
     private readonly IAccountHandler _accountHandler;
     private readonly IMapper _mapper;
-    private readonly IDistribuitedCacheService _cacheService;
+    private readonly IDistribuitedCacheProvider _cacheProvider;
 
     public AuthenticatedAccountController(IMapper mapper, IAccountHandler accountHandler,
-        IDistribuitedCacheService cacheService)
+        IDistribuitedCacheProvider cacheProvider)
     {
         _mapper = mapper;
         _accountHandler = accountHandler;
-        _cacheService = cacheService;
+        _cacheProvider = cacheProvider;
     }
 
     [HttpPost("driver_license/{userId:guid}")]
@@ -41,7 +41,7 @@ public class AuthenticatedAccountController : ControllerBase
     [HttpGet(Name = "GetAccount")]
     public async Task<IActionResult> GetAccountInformation(Guid id)
     {
-        var cachedUserResult = _cacheService.GetData<GetUserResponse>($"user_cached_{id}");
+        var cachedUserResult = _cacheProvider.GetData<GetUserResponse>($"user_cached_{id}");
 
         if (cachedUserResult is not null)
         {
@@ -58,7 +58,7 @@ public class AuthenticatedAccountController : ControllerBase
 
         var mappedUserResponse = _mapper.Map<GetUserResponse>(result.Data);
 
-        _cacheService.SetData($"user_cached_{id}", cachedUserResult);
+        _cacheProvider.SetData($"user_cached_{id}", cachedUserResult);
 
         return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
     }

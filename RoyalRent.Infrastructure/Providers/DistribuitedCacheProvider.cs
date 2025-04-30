@@ -4,11 +4,11 @@ using RoyalRent.Application.Abstractions.Providers;
 
 namespace RoyalRent.Infrastructure.Providers;
 
-public class DistribuitedCacheService : IDistribuitedCacheService
+public class DistribuitedCacheProvider : IDistribuitedCacheProvider
 {
     private readonly IDistributedCache _cache;
 
-    public DistribuitedCacheService(IDistributedCache cache)
+    public DistribuitedCacheProvider(IDistributedCache cache)
     {
         _cache = cache;
     }
