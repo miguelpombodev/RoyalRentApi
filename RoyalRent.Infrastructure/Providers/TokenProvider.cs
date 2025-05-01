@@ -105,7 +105,6 @@ public class TokenProvider : ITokenProvider
         {
             Subject = new ClaimsIdentity(
             [
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
             ]),
             NotBefore = now.AddSeconds(-30),

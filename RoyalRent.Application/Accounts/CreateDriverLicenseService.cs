@@ -2,6 +2,7 @@ using AutoMapper;
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Accounts;
 using RoyalRent.Application.DTOs;
+using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Application.Repositories;
 using RoyalRent.Domain.Entities;
 
@@ -20,11 +21,10 @@ public class CreateDriverLicenseService : ICreateDriverLicenseService
         _mapper = mapper;
     }
 
-    public async Task<Result<string>> ExecuteAsync(CreateUserDriverLicenseDto dto, Guid userId)
+    public async Task<Result<string>> ExecuteAsync(CreateUserDriverLicenseDto dto, string userEmail)
     {
+        dto.UserId = ((await _accountRepository.GetUserByEmail(userEmail))!).Id;
         var mappedDriverLicense = _mapper.Map<UserDriverLicense>(dto);
-
-        mappedDriverLicense.Id = userId;
 
         await _accountRepository.AddDriverLicense(mappedDriverLicense);
 

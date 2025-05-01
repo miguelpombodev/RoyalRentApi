@@ -7,11 +7,11 @@ using RoyalRent.Domain.Entities;
 
 namespace RoyalRent.Application.Accounts;
 
-public class GetUserBasicInformationService : IGetUserBasicInformationService
+public class GetUserService : IGetUserService
 {
     private readonly IAccountRepository _accountRepository;
 
-    public GetUserBasicInformationService(IAccountRepository accountRepository)
+    public GetUserService(IAccountRepository accountRepository)
     {
         _accountRepository = accountRepository;
     }
@@ -20,6 +20,15 @@ public class GetUserBasicInformationService : IGetUserBasicInformationService
     public async Task<Result<User>> ExecuteGetByIdAsync(Guid id)
     {
         var user = await _accountRepository.GetUserBasicInformationById(id);
+
+        if (user is null) return Result<User>.Failure(AccountErrors.UserAccountNotFound);
+
+        return Result<User>.Success(user);
+    }
+
+    public async Task<Result<User>> ExecuteGetByEmailAsync(string email)
+    {
+        var user = await _accountRepository.GetUserByEmail(email);
 
         if (user is null) return Result<User>.Failure(AccountErrors.UserAccountNotFound);
 

@@ -5,7 +5,7 @@ using RoyalRent.Domain.Entities;
 
 namespace RoyalRent.UnitTests.Account.Services;
 
-public class GetUserBasicInformationServiceTests
+public class GetUserServiceTests
 {
     [Fact]
     public async Task GetUserBasicInformation_ShouldReturnUserInformations()
@@ -15,7 +15,7 @@ public class GetUserBasicInformationServiceTests
         var mockRepo = new Mock<IAccountRepository>();
         mockRepo.Setup(repo => repo.GetUserBasicInformationById(user.Id)).ReturnsAsync(user);
 
-        var service = new GetUserBasicInformationService(mockRepo.Object);
+        var service = new GetUserService(mockRepo.Object);
 
         var result = await service.ExecuteGetByIdAsync(user.Id);
 

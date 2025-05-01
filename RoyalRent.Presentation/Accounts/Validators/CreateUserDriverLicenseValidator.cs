@@ -1,6 +1,7 @@
 using System.Data;
 using FluentValidation;
 using RoyalRent.Application.DTOs;
+using RoyalRent.Application.DTOs.Inputs;
 
 namespace RoyalRent.Presentation.Accounts.Validators;
 
@@ -14,7 +15,7 @@ public class CreateUserDriverLicenseValidator : AbstractValidator<CreateUserDriv
         RuleFor(x => x.BirthDate).NotEmpty().WithMessage("Field birth date must be required");
         RuleFor(x => x.DriverLicenseNumber).NotEmpty().WithMessage("Field CNH number must be required");
         RuleFor(x => x.DocumentExpirationDate).NotEmpty().WithMessage("Field Document Expiration Date must be required")
-            .LessThanOrEqualTo(DateOnly.FromDateTime(DateTime.Now))
+            .GreaterThan(DateOnly.FromDateTime(DateTime.Now))
             .WithMessage("CNH Expiration date must be less or equal than current date");
         RuleFor(x => x.State).NotEmpty().WithMessage("Field State must be required");
     }

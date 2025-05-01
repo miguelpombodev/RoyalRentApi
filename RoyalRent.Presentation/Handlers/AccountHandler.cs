@@ -2,6 +2,7 @@ using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Accounts;
 using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Application.DTOs;
+using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Application.DTOs.Outputs;
 using RoyalRent.Domain.Entities;
 using RoyalRent.Presentation.Abstractions;
@@ -12,13 +13,13 @@ namespace RoyalRent.Presentation.Handlers;
 public class AccountHandler : IAccountHandler
 {
     private readonly ICreateAccountService _createAccountService;
-    private readonly IGetUserBasicInformationService _getUserBasicInformationService;
+    private readonly IGetUserService _getUserBasicInformationService;
     private readonly ICreateDriverLicenseService _addDriverLicenseService;
     private readonly ILoginService _loginService;
     private readonly IAuthenticationProvider _authProvider;
 
     public AccountHandler(ICreateAccountService createAccountService,
-        IGetUserBasicInformationService getUserBasicInformationService,
+        IGetUserService getUserBasicInformationService,
         ICreateDriverLicenseService addDriverLicenseService,
         ILoginService loginService,
         IAuthenticationProvider authProvider
@@ -31,26 +32,26 @@ public class AccountHandler : IAccountHandler
         _authProvider = authProvider;
     }
 
-    public async Task<Result<User>> SaveAccountAsync(CreateAccountDto request)
+    public async Task<Result<User>> SaveAccountHandler(CreateAccountDto request)
     {
         return await _createAccountService.ExecuteAsync(request);
     }
 
-    public async Task<Result<User>> GetUserInformationAsync(Guid id)
+    public async Task<Result<User>> GetUserInformationHandler(string email)
     {
-        var result = await _getUserBasicInformationService.ExecuteGetByIdAsync(id);
+        var result = await _getUserBasicInformationService.ExecuteGetByEmailAsync(email);
 
         return result;
     }
 
-    public async Task<Result<string>> SaveDriverLicense(CreateUserDriverLicenseDto request, Guid userId)
+    public async Task<Result<string>> SaveDriverLicenseHandler(CreateUserDriverLicenseDto request, string userEmail)
     {
-        var result = await _addDriverLicenseService.ExecuteAsync(request, userId);
+        var result = await _addDriverLicenseService.ExecuteAsync(request, userEmail);
 
         return result;
     }
 
-    public async Task<Result<AuthResult>> Login(LoginAccountRequest body)
+    public async Task<Result<AuthResult>> LoginHandler(LoginAccountRequest body)
     {
         var result = await _loginService.ExecuteAsync(body);
 

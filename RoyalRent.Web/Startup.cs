@@ -68,6 +68,23 @@ public class Startup
                 ValidAudience = Configuration["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Secret"]!))
             };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var tokenFromCookie = context.HttpContext.Request.Cookies["access_token"];
+                    if (string.IsNullOrEmpty(tokenFromCookie))
+                    {
+                        context.NoResult();
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    }
+
+                    context.Token = tokenFromCookie;
+                    return Task.CompletedTask;
+                }
+            };
         }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
         {
             options.Cookie.HttpOnly = true;
@@ -76,7 +93,6 @@ public class Startup
             options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
             options.SlidingExpiration = true;
         });
-
     }
 
     public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -95,8 +111,8 @@ public class Startup
 
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
-
         app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
 }

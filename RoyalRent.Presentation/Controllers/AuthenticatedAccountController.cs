@@ -1,8 +1,9 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RoyalRent.Application.Abstractions.Providers;
-using RoyalRent.Application.DTOs;
+using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Responses;
 
@@ -10,26 +11,32 @@ namespace RoyalRent.Presentation.Controllers;
 
 [ApiController]
 [Route("api/account")]
+[Authorize]
 public class AuthenticatedAccountController : ControllerBase
 {
     private readonly IAccountHandler _accountHandler;
+    private readonly ICookiesHandler _cookiesHandler;
     private readonly IMapper _mapper;
     private readonly IDistribuitedCacheProvider _cacheProvider;
 
+    private const string GetCachedUserKeyPrefix = "user_cached:";
+
     public AuthenticatedAccountController(IMapper mapper, IAccountHandler accountHandler,
-        IDistribuitedCacheProvider cacheProvider)
+        IDistribuitedCacheProvider cacheProvider, ICookiesHandler cookiesHandler)
     {
         _mapper = mapper;
         _accountHandler = accountHandler;
         _cacheProvider = cacheProvider;
+        _cookiesHandler = cookiesHandler;
     }
 
-    [HttpPost("driver_license/{userId:guid}")]
-    public async Task<IResult> SaveAccountDriverLicense(CreateUserDriverLicenseDto body, Guid userId)
+    [HttpPost("driver_license")]
+    public async Task<IResult> SaveAccountDriverLicense(CreateUserDriverLicenseDto body)
     {
+        var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
         var dto = _mapper.Map<CreateUserDriverLicenseDto>(body);
 
-        await _accountHandler.SaveDriverLicense(dto, userId);
+        await _accountHandler.SaveDriverLicenseHandler(dto, userEmail);
 
         return Results.CreatedAtRoute("GetDriverLicense");
     }
@@ -39,16 +46,19 @@ public class AuthenticatedAccountController : ControllerBase
     /// </summary>
     /// <returns>The user specified by identifier, if exists</returns>
     [HttpGet(Name = "GetAccount")]
-    public async Task<IActionResult> GetAccountInformation(Guid id)
+    public async Task<IActionResult> GetAccountInformation()
     {
-        var cachedUserResult = _cacheProvider.GetData<GetUserResponse>($"user_cached_{id}");
+        var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
+
+        var cachedUserResult =
+            _cacheProvider.GetData<GetUserResponse>(string.Concat(GetCachedUserKeyPrefix, userEmail));
 
         if (cachedUserResult is not null)
         {
             return StatusCode(StatusCodes.Status200OK, new { user = cachedUserResult });
         }
 
-        var result = await _accountHandler.GetUserInformationAsync(id);
+        var result = await _accountHandler.GetUserInformationHandler(userEmail);
 
         if (result.IsFailure)
         {
@@ -58,7 +68,7 @@ public class AuthenticatedAccountController : ControllerBase
 
         var mappedUserResponse = _mapper.Map<GetUserResponse>(result.Data);
 
-        _cacheProvider.SetData($"user_cached_{id}", cachedUserResult);
+        _cacheProvider.SetData(string.Concat(GetCachedUserKeyPrefix, userEmail), cachedUserResult);
 
         return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
     }

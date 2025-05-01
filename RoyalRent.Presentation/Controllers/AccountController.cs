@@ -1,11 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Requests;
-using RoyalRent.Presentation.Accounts.Responses;
 
 namespace RoyalRent.Presentation.Controllers;
 
@@ -27,7 +25,7 @@ public class AccountController : ControllerBase
     {
         var dto = _mapper.Map<CreateAccountDto>(body);
 
-        var result = await _accountHandler.SaveAccountAsync(dto);
+        var result = await _accountHandler.SaveAccountHandler(dto);
 
         if (result.IsFailure)
         {
@@ -35,14 +33,13 @@ public class AccountController : ControllerBase
                 new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
         }
 
-        return CreatedAtAction(nameof(AuthenticatedAccountController.GetAccountInformation),
-            new { status = "success" });
+        return Created("/api/account/", new { status = "success" });
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginAccountRequest body)
     {
-        var result = await _accountHandler.Login(body);
+        var result = await _accountHandler.LoginHandler(body);
 
         if (result.IsFailure)
         {
@@ -50,6 +47,7 @@ public class AccountController : ControllerBase
                 new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
         }
 
+        SetJwtTokenCookie(result.Data!.AccessToken);
         SetRefreshTokenCookie(result.Data!.RefreshToken);
 
         return StatusCode(StatusCodes.Status200OK, new { token = result.Data.AccessToken });
@@ -91,6 +89,18 @@ public class AccountController : ControllerBase
     private void SetRefreshTokenCookie(string refreshToken)
     {
         Response.Cookies.Append("refresh_token", refreshToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddMinutes(60)
+            });
+    }
+
+    private void SetJwtTokenCookie(string token)
+    {
+        Response.Cookies.Append("access_token", token,
             new CookieOptions
             {
                 HttpOnly = true,

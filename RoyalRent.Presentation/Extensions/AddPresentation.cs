@@ -19,6 +19,8 @@ public static class AddPresentation
 
         services.AddScoped<IAccountHandler, AccountHandler>();
 
+        services.AddScoped<ICookiesHandler, CookiesHandler>();
+
         services.AddControllers().AddApplicationPart(presentationAssembly);
 
         return services;
