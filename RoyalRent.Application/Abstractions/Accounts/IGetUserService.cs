@@ -7,4 +7,5 @@ public interface IGetUserService
 {
     Task<Result<User>> ExecuteGetByIdAsync(Guid id);
     Task<Result<User>> ExecuteGetByEmailAsync(string email);
+    Task<Result<UserDriverLicense>> GetUserDriverLicenseByIdAsync(Guid id);
 }

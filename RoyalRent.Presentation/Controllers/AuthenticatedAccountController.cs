@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Application.DTOs.Inputs;
+using RoyalRent.Domain.Entities;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Responses;
 
@@ -20,6 +21,7 @@ public class AuthenticatedAccountController : ControllerBase
     private readonly IDistribuitedCacheProvider _cacheProvider;
 
     private const string GetCachedUserKeyPrefix = "user_cached:";
+    private const string GetCachedUserLicenseKeyPrefix = "user_license_cached:";
 
     public AuthenticatedAccountController(IMapper mapper, IAccountHandler accountHandler,
         IDistribuitedCacheProvider cacheProvider, ICookiesHandler cookiesHandler)
@@ -74,8 +76,22 @@ public class AuthenticatedAccountController : ControllerBase
     }
 
     [HttpGet("/license", Name = "GetDriverLicense")]
-    public IActionResult GetAccountDriverLicenseInformation(Guid id)
+    public async Task<IActionResult> GetAccountDriverLicenseInformation()
     {
-        return StatusCode(StatusCodes.Status200OK, new { user = "example" });
+        var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
+
+        var cachedUserResult =
+            _cacheProvider.GetData<UserDriverLicense>(string.Concat(GetCachedUserKeyPrefix, userEmail));
+
+        if (cachedUserResult is not null)
+        {
+            return StatusCode(StatusCodes.Status200OK, new { user = cachedUserResult });
+        }
+
+        var result = await _accountHandler.GetUserDriverLicenseHandler(userEmail);
+
+        _cacheProvider.SetData(string.Concat(GetCachedUserLicenseKeyPrefix, userEmail), cachedUserResult);
+
+        return StatusCode(StatusCodes.Status200OK, new { user = result.Data });
     }
 }

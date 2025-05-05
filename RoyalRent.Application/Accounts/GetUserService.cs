@@ -34,4 +34,13 @@ public class GetUserService : IGetUserService
 
         return Result<User>.Success(user);
     }
+
+    public async Task<Result<UserDriverLicense>> GetUserDriverLicenseByIdAsync(Guid id)
+    {
+        var userDriverLicense = await _accountRepository.GetDriverLicense(id);
+
+        if (userDriverLicense is null) return Result<UserDriverLicense>.Failure(DriverLicenseErrors.UserDriverLicenseNotFound);
+
+        return Result<UserDriverLicense>.Success(userDriverLicense);
+    }
 }

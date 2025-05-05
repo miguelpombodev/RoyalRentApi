@@ -15,5 +15,6 @@ public interface IAccountHandler
     Task<Result<AuthResult>> LoginHandler(LoginAccountRequest body);
     Task<Result<AuthResult>> GenerateRefreshTokenHandler(string refreshToken);
     Task<Result<bool>> LogoutHandler(string refreshToken);
+    Task<Result<UserDriverLicense>> GetUserDriverLicenseHandler(string email);
 
 }

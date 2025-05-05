@@ -71,4 +71,14 @@ public class AccountHandler : IAccountHandler
 
         return result;
     }
+
+    public async Task<Result<UserDriverLicense>> GetUserDriverLicenseHandler(string email)
+    {
+        var userResult = await _getUserBasicInformationService.ExecuteGetByEmailAsync(email);
+
+        var userDriverLicenseResult =
+            await _getUserBasicInformationService.GetUserDriverLicenseByIdAsync(userResult.Data!.Id);
+
+        return userDriverLicenseResult;
+    }
 }

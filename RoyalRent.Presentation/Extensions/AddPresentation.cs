@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,7 @@ public static class AddPresentation
 
         services.AddScoped<ICookiesHandler, CookiesHandler>();
 
-        services.AddControllers().AddApplicationPart(presentationAssembly);
+        services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles).AddApplicationPart(presentationAssembly);
 
         return services;
     }

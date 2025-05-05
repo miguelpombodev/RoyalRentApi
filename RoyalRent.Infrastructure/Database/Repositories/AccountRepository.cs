@@ -33,7 +33,8 @@ public class AccountRepository : IAccountRepository
 
     public async Task<UserPassword?> GetLastActualUserPassword(Guid userId)
     {
-        var userLastActualPassword = await _userPasswordContext.FirstOrDefaultAsync(userPassword => userPassword.UserId == userId && userPassword.ActualPassword);
+        var userLastActualPassword = await _userPasswordContext.FirstOrDefaultAsync(userPassword =>
+            userPassword.UserId == userId && userPassword.ActualPassword);
 
         return userLastActualPassword;
     }
@@ -68,8 +69,10 @@ public class AccountRepository : IAccountRepository
         throw new NotImplementedException();
     }
 
-    public Task<UserDriverLicense> GetDriverLicense(Guid id)
+    public async Task<UserDriverLicense?> GetDriverLicense(Guid id)
     {
-        throw new NotImplementedException();
+        var addedEntry = await _userDriverLicenseContext.FirstOrDefaultAsync(license => license.UserId == id);
+
+        return addedEntry;
     }
 }
