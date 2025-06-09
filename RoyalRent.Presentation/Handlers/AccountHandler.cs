@@ -14,12 +14,14 @@ public class AccountHandler : IAccountHandler
 {
     private readonly ICreateAccountService _createAccountService;
     private readonly IGetUserService _getUserBasicInformationService;
+    private readonly IUpdateUserService _updateUserService;
     private readonly ICreateDriverLicenseService _addDriverLicenseService;
     private readonly ILoginService _loginService;
     private readonly IAuthenticationProvider _authProvider;
 
     public AccountHandler(ICreateAccountService createAccountService,
         IGetUserService getUserBasicInformationService,
+        IUpdateUserService updateUserService,
         ICreateDriverLicenseService addDriverLicenseService,
         ILoginService loginService,
         IAuthenticationProvider authProvider
@@ -28,6 +30,7 @@ public class AccountHandler : IAccountHandler
         _createAccountService = createAccountService;
         _getUserBasicInformationService = getUserBasicInformationService;
         _addDriverLicenseService = addDriverLicenseService;
+        _updateUserService = updateUserService;
         _loginService = loginService;
         _authProvider = authProvider;
     }
@@ -80,5 +83,15 @@ public class AccountHandler : IAccountHandler
             await _getUserBasicInformationService.GetUserDriverLicenseByIdAsync(userResult.Data!.Id);
 
         return userDriverLicenseResult;
+    }
+
+    public async Task<Result<string>> UpdateUserForgotPasswordHandler(ForgotPasswordRequest body)
+    {
+        var userResult = await _getUserBasicInformationService.ExecuteGetByEmailAsync(body.email);
+
+        var updateUserPasswordResult =
+            await _updateUserService.UpdateUserPassword(userResult.Data!.Id, body.newPassword);
+
+        return updateUserPasswordResult;
     }
 }

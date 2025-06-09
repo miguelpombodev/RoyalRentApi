@@ -16,6 +16,7 @@ namespace RoyalRent.Web;
 public class Startup
 {
     public Startup(IConfiguration configuration) => Configuration = configuration;
+    public readonly ILoggerFactory factory = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
     public IConfiguration Configuration { get; set; }
 
@@ -28,6 +29,8 @@ public class Startup
                 pgAction.EnableRetryOnFailure(3);
                 pgAction.CommandTimeout(30);
             });
+
+            builder.UseLoggerFactory(factory);
 
             builder.EnableDetailedErrors();
             builder.EnableSensitiveDataLogging();

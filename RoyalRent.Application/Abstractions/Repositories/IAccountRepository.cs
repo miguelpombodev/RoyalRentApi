@@ -13,4 +13,5 @@ public interface IAccountRepository
     Task<UserDriverLicense> AddDriverLicense(UserDriverLicense userDriverLicense);
     Task<UserDriverLicense> UpdateDriverLicense(UserDriverLicense userDriverLicense);
     Task<UserDriverLicense?> GetDriverLicense(Guid id);
+    Task<UserPassword> UpdateAccountPassword(Guid id, UserPassword userPassword, Guid lastPasswordId);
 }

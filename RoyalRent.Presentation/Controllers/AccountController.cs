@@ -70,6 +70,18 @@ public class AccountController : ControllerBase
         return StatusCode(StatusCodes.Status200OK, new { token = result.Data.AccessToken });
     }
 
+    [HttpPost("forgot")]
+    public async Task<IActionResult> UpdateUserForgotPassword(ForgotPasswordRequest body)
+    {
+        var result = await _accountHandler.UpdateUserForgotPasswordHandler(body);
+
+        if (result.IsFailure)
+            return StatusCode(result.Error.StatusCode,
+                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
+
+        return StatusCode(StatusCodes.Status200OK, new { status = "success" });
+    }
+
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {

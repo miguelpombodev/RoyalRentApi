@@ -47,6 +47,16 @@ public class AccountRepository : IAccountRepository
         return Tuple.Create(addedEntry.Entity, addedUserPasswordEntry.Entity);
     }
 
+    public async Task<UserPassword> UpdateAccountPassword(Guid id, UserPassword userPassword, Guid lastPasswordId)
+    {
+        var addedUserPasswordEntry = await _userPasswordContext.AddAsync(userPassword);
+
+        await _userPasswordContext.Where(up => up.Id == lastPasswordId).ExecuteUpdateAsync(up =>
+            up.SetProperty(u => u.ActualPassword, false));
+
+        return addedUserPasswordEntry.Entity;
+    }
+
     public Task<User> UpdateAccount(User user)
     {
         throw new NotImplementedException();

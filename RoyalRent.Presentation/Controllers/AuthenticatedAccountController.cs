@@ -7,6 +7,7 @@ using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Domain.Entities;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Accounts.Responses;
+using RoyalRent.Presentation.Attributes;
 
 namespace RoyalRent.Presentation.Controllers;
 
@@ -18,17 +19,14 @@ public class AuthenticatedAccountController : ControllerBase
     private readonly IAccountHandler _accountHandler;
     private readonly ICookiesHandler _cookiesHandler;
     private readonly IMapper _mapper;
-    private readonly IDistribuitedCacheProvider _cacheProvider;
 
     private const string GetCachedUserKeyPrefix = "user_cached:";
     private const string GetCachedUserLicenseKeyPrefix = "user_license_cached:";
 
-    public AuthenticatedAccountController(IMapper mapper, IAccountHandler accountHandler,
-        IDistribuitedCacheProvider cacheProvider, ICookiesHandler cookiesHandler)
+    public AuthenticatedAccountController(IMapper mapper, IAccountHandler accountHandler, ICookiesHandler cookiesHandler)
     {
         _mapper = mapper;
         _accountHandler = accountHandler;
-        _cacheProvider = cacheProvider;
         _cookiesHandler = cookiesHandler;
     }
 
@@ -48,17 +46,10 @@ public class AuthenticatedAccountController : ControllerBase
     /// </summary>
     /// <returns>The user specified by identifier, if exists</returns>
     [HttpGet(Name = "GetAccount")]
+    [RedisCache(GetCachedUserKeyPrefix)]
     public async Task<IActionResult> GetAccountInformation()
     {
         var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
-
-        var cachedUserResult =
-            _cacheProvider.GetData<GetUserResponse>(string.Concat(GetCachedUserKeyPrefix, userEmail));
-
-        if (cachedUserResult is not null)
-        {
-            return StatusCode(StatusCodes.Status200OK, new { user = cachedUserResult });
-        }
 
         var result = await _accountHandler.GetUserInformationHandler(userEmail);
 
@@ -70,27 +61,17 @@ public class AuthenticatedAccountController : ControllerBase
 
         var mappedUserResponse = _mapper.Map<GetUserResponse>(result.Data);
 
-        _cacheProvider.SetData(string.Concat(GetCachedUserKeyPrefix, userEmail), cachedUserResult);
 
         return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
     }
 
-    [HttpGet("/license", Name = "GetDriverLicense")]
+    [HttpGet("license", Name = "GetDriverLicense")]
+    [RedisCache(GetCachedUserLicenseKeyPrefix)]
     public async Task<IActionResult> GetAccountDriverLicenseInformation()
     {
         var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
 
-        var cachedUserResult =
-            _cacheProvider.GetData<UserDriverLicense>(string.Concat(GetCachedUserKeyPrefix, userEmail));
-
-        if (cachedUserResult is not null)
-        {
-            return StatusCode(StatusCodes.Status200OK, new { user = cachedUserResult });
-        }
-
         var result = await _accountHandler.GetUserDriverLicenseHandler(userEmail);
-
-        _cacheProvider.SetData(string.Concat(GetCachedUserLicenseKeyPrefix, userEmail), cachedUserResult);
 
         return StatusCode(StatusCodes.Status200OK, new { user = result.Data });
     }
