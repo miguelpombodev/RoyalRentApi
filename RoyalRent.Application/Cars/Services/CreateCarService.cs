@@ -29,46 +29,17 @@ public class CreateCarService : ICreateCarService
 
         foreach (var data in records)
         {
-            Guid carMakeId;
-            Guid carTypeId;
-            Guid carColorId;
+            var carMakeId = await GetOrCreateEntityIdAsync<CarMake>(
+                data.Make,
+                () => _carsRepository.CreateOneCarMake(new CarMake(data.Make)));
 
-            var gotCarMake = await _carsRepository.GetByName<CarMake>(data.Make);
-            var gotCarType = await _carsRepository.GetByName<CarType>(data.Type);
-            var gotCarColor = await _carsRepository.GetByName<CarColor>(data.Color);
+            var carTypeId = await GetOrCreateEntityIdAsync<CarType>(
+                data.Type,
+                () => _carsRepository.CreateOneCarType(new CarType(data.Type)));
 
-            if (gotCarMake is null)
-            {
-                var carMakeEntity = new CarMake(data.Make);
-                var createdCarMake = await _carsRepository.CreateOneCarMake(carMakeEntity);
-                carMakeId = createdCarMake.Id;
-            }
-            else
-            {
-                carMakeId = gotCarMake.Id;
-            }
-
-            if (gotCarType is null)
-            {
-                var carTypeEntity = new CarType(data.Type);
-                var createdCarType = await _carsRepository.CreateOneCarType(carTypeEntity);
-                carTypeId = createdCarType.Id;
-            }
-            else
-            {
-                carTypeId = gotCarType.Id;
-            }
-
-            if (gotCarColor is null)
-            {
-                var carColorEntity = new CarColor(data.Color);
-                var createdCarColor = await _carsRepository.CreateOneCarColor(carColorEntity);
-                carColorId = createdCarColor.Id;
-            }
-            else
-            {
-                carColorId = gotCarColor.Id;
-            }
+            var carColorId = await GetOrCreateEntityIdAsync<CarColor>(
+                data.Color,
+                () => _carsRepository.CreateOneCarColor(new CarColor(data.Color)));
 
 
             var carEntity = new Car(data.Name, data.Model, carMakeId, data.Year, carTypeId,
@@ -80,5 +51,17 @@ public class CreateCarService : ICreateCarService
 
 
         return Result<string>.Success("success!");
+    }
+
+    private async Task<Guid> GetOrCreateEntityIdAsync<T>(
+        string name,
+        Func<Task<T>> createFunc) where T : BaseEntity
+    {
+        var entity = await _carsRepository.GetByName<T>(name);
+        if (entity is not null)
+            return entity.Id;
+
+        var createdEntity = await createFunc();
+        return createdEntity.Id;
     }
 }
