@@ -1,4 +1,5 @@
 using AutoMapper;
+using RoyalRent.Application.Cars.Model;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Domain.Entities;

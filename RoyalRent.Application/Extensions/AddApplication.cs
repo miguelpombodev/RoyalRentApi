@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using RoyalRent.Application.Abstractions.Accounts;
+using RoyalRent.Application.Abstractions.Cars;
 using RoyalRent.Application.Accounts;
+using RoyalRent.Application.Cars.Services;
 using RoyalRent.Application.Mappings;
 
 namespace RoyalRent.Application.Extensions;
@@ -15,6 +17,8 @@ public static class AddApplication
         services.AddScoped<IUpdateUserService, UpdateUserService>();
         services.AddScoped<ICreateDriverLicenseService, CreateDriverLicenseService>();
         services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<ICreateCarService, CreateCarService>();
+
 
         return services;
     }

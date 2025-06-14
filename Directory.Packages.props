@@ -5,6 +5,7 @@
   <ItemGroup>
     <!-- WEB LAYER -->
     <PackageVersion Include="AutoMapper" Version="14.0.0" />
+    <PackageVersion Include="CsvHelper" Version="33.1.0" />
     <PackageVersion Include="FluentAssertions" Version="8.2.0" />
     <PackageVersion Include="FluentValidation" Version="11.11.0" />
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />

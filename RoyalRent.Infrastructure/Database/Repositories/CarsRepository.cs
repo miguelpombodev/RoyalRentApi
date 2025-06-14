@@ -1,0 +1,64 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using RoyalRent.Application.Abstractions.Repositories;
+using RoyalRent.Domain.Entities;
+
+namespace RoyalRent.Infrastructure.Database.Repositories;
+
+public class CarsRepository : ICarsRepository
+{
+    public CarsRepository(ApiDbContext context, ILogger<CarsRepository> logger)
+    {
+        _context = context;
+        _carContext = context.Set<Car>();
+        _carMakeContext = context.Set<CarMake>();
+        _carTypeContext = context.Set<CarType>();
+        _carColorContext = context.Set<CarColor>();
+        _logger = logger;
+    }
+
+    private readonly ILogger _logger;
+
+    private readonly ApiDbContext _context;
+    private readonly DbSet<Car> _carContext;
+    private readonly DbSet<CarMake> _carMakeContext;
+    private readonly DbSet<CarType> _carTypeContext;
+    private readonly DbSet<CarColor> _carColorContext;
+
+    public async Task<Car> CreateOneCar(Car car)
+    {
+        var carEntry = await _carContext.AddAsync(car);
+
+        _logger.LogInformation("A car {CarName} was created successfully at {CarCreatedAt}", car.Name, car.CreatedOn);
+
+        return carEntry.Entity;
+    }
+
+    public async Task<CarMake> CreateOneCarMake(CarMake carMake)
+    {
+        var carMakeEntry = await _carMakeContext.AddAsync(carMake);
+
+        return carMakeEntry.Entity;
+    }
+
+    public async Task<CarType> CreateOneCarType(CarType carType)
+    {
+        var carTypeEntry = await _carTypeContext.AddAsync(carType);
+
+        return carTypeEntry.Entity;
+    }
+
+    public async Task<CarColor> CreateOneCarColor(CarColor carColor)
+    {
+        var carColorEntry = await _carColorContext.AddAsync(carColor);
+
+        return carColorEntry.Entity;
+    }
+
+    public async Task<T?> GetByName<T>(string name) where T : class
+    {
+        var item = await _context.Set<T>().FirstOrDefaultAsync(p => EF.Property<string>(p, "Name") == name);
+
+        return item;
+    }
+}

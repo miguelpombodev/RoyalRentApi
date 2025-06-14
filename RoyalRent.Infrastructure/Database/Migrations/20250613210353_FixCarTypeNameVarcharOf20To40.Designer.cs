@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RoyalRent.Infrastructure.Database;
@@ -11,9 +12,11 @@ using RoyalRent.Infrastructure.Database;
 namespace RoyalRent.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250613210353_FixCarTypeNameVarcharOf20To40")]
+    partial class FixCarTypeNameVarcharOf20To40
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,11 +73,14 @@ namespace RoyalRent.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarColorId");
+                    b.HasIndex("CarColorId")
+                        .IsUnique();
 
-                    b.HasIndex("CarMakeId");
+                    b.HasIndex("CarMakeId")
+                        .IsUnique();
 
-                    b.HasIndex("CarTypeId");
+                    b.HasIndex("CarTypeId")
+                        .IsUnique();
 
                     b.HasIndex("Name", "Model", "Year", "CarMakeId", "CarColorId", "CarTypeId");
 
@@ -359,22 +365,22 @@ namespace RoyalRent.Infrastructure.Database.Migrations
             modelBuilder.Entity("RoyalRent.Domain.Entities.Car", b =>
                 {
                     b.HasOne("RoyalRent.Domain.Entities.CarColor", "CarColor")
-                        .WithMany("Cars")
-                        .HasForeignKey("CarColorId")
+                        .WithOne("Car")
+                        .HasForeignKey("RoyalRent.Domain.Entities.Car", "CarColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_CAR_CAR_COLOR");
 
                     b.HasOne("RoyalRent.Domain.Entities.CarMake", "CarMake")
-                        .WithMany("Cars")
-                        .HasForeignKey("CarMakeId")
+                        .WithOne("Car")
+                        .HasForeignKey("RoyalRent.Domain.Entities.Car", "CarMakeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_CAR_CAR_MAKE");
 
                     b.HasOne("RoyalRent.Domain.Entities.CarType", "CarType")
-                        .WithMany("Cars")
-                        .HasForeignKey("CarTypeId")
+                        .WithOne("Car")
+                        .HasForeignKey("RoyalRent.Domain.Entities.Car", "CarTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_CAR_CAR_TYPE");
@@ -422,17 +428,17 @@ namespace RoyalRent.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("RoyalRent.Domain.Entities.CarColor", b =>
                 {
-                    b.Navigation("Cars");
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("RoyalRent.Domain.Entities.CarMake", b =>
                 {
-                    b.Navigation("Cars");
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("RoyalRent.Domain.Entities.CarType", b =>
                 {
-                    b.Navigation("Cars");
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("RoyalRent.Domain.Entities.User", b =>
