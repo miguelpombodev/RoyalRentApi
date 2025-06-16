@@ -19,7 +19,6 @@ public static class AddPresentation
         services.AddValidatorsFromAssembly(presentationAssembly);
 
         services.AddScoped<IAccountHandler, AccountHandler>();
-        services.AddScoped<ICarHandler, CarHandler>();
 
         services.AddScoped<ICookiesHandler, CookiesHandler>();
 

@@ -8,6 +8,7 @@ using RoyalRent.Application.Extensions;
 using RoyalRent.Infrastructure.Database;
 using RoyalRent.Infrastructure.Extensions;
 using RoyalRent.Presentation.Extensions;
+using RoyalRent.Web.Extensions;
 using Scrutor;
 using Serilog;
 
@@ -49,6 +50,8 @@ public class Startup
             .AddAplicationCollection()
             .AddInfrastructureCollection(Configuration)
             .AddPresentationCollection();
+
+        services.AddGlobalErrorException();
 
         services.AddSwaggerGen(config =>
         {
@@ -114,8 +117,14 @@ public class Startup
 
         app.UseRouting();
 
+        app.UseGlobalErrorHandler();
+
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapErrorHandling();
+        });
     }
 }

@@ -12,51 +12,42 @@ namespace RoyalRent.Presentation.Handlers;
 
 public class AccountHandler : IAccountHandler
 {
-    private readonly ICreateAccountService _createAccountService;
-    private readonly IGetUserService _getUserBasicInformationService;
-    private readonly IUpdateUserService _updateUserService;
-    private readonly ICreateDriverLicenseService _addDriverLicenseService;
-    private readonly ILoginService _loginService;
+    private readonly IAccountCommandService _accountCommandService;
+    private readonly IAccountQueryService _accountQueryService;
     private readonly IAuthenticationProvider _authProvider;
 
-    public AccountHandler(ICreateAccountService createAccountService,
-        IGetUserService getUserBasicInformationService,
-        IUpdateUserService updateUserService,
-        ICreateDriverLicenseService addDriverLicenseService,
-        ILoginService loginService,
-        IAuthenticationProvider authProvider
-    )
+    public AccountHandler(
+        IAuthenticationProvider authProvider,
+        IAccountCommandService accountCommandService,
+        IAccountQueryService accountQueryService)
     {
-        _createAccountService = createAccountService;
-        _getUserBasicInformationService = getUserBasicInformationService;
-        _addDriverLicenseService = addDriverLicenseService;
-        _updateUserService = updateUserService;
-        _loginService = loginService;
         _authProvider = authProvider;
+        _accountCommandService = accountCommandService;
+        _accountQueryService = accountQueryService;
     }
 
     public async Task<Result<User>> SaveAccountHandler(CreateAccountDto request)
     {
-        return await _createAccountService.ExecuteAsync(request);
+        return await _accountCommandService.ExecuteCreateAccountService(request);
     }
 
     public async Task<Result<User>> GetUserInformationHandler(string email)
     {
-        var result = await _getUserBasicInformationService.ExecuteGetByEmailAsync(email);
+        var result = await _accountQueryService.ExecuteGetByEmailAsync(email);
 
         return result;
     }
 
     public async Task<Result<string>> SaveDriverLicenseHandler(CreateUserDriverLicenseDto request, string userEmail)
     {
-        var result = await _addDriverLicenseService.ExecuteAsync(request, userEmail);
+        var result = await _accountCommandService.ExecuteCreateDriverLicenseService(request, userEmail);
 
         return result;
     }
 
     public async Task<Result<AuthResult>> LoginHandler(LoginAccountRequest body)
     {
-        var result = await _loginService.ExecuteAsync(body);
+        var result = await _accountQueryService.ExecuteLoginService(body);
 
         return result;
     }
@@ -77,20 +68,20 @@ public class AccountHandler : IAccountHandler
 
     public async Task<Result<UserDriverLicense>> GetUserDriverLicenseHandler(string email)
     {
-        var userResult = await _getUserBasicInformationService.ExecuteGetByEmailAsync(email);
+        var userResult = await _accountQueryService.ExecuteGetByEmailAsync(email);
 
         var userDriverLicenseResult =
-            await _getUserBasicInformationService.GetUserDriverLicenseByIdAsync(userResult.Data!.Id);
+            await _accountQueryService.ExecuteGetUserDriverLicenseByIdAsync(userResult.Data!.Id);
 
         return userDriverLicenseResult;
     }
 
     public async Task<Result<string>> UpdateUserForgotPasswordHandler(ForgotPasswordRequest body)
     {
-        var userResult = await _getUserBasicInformationService.ExecuteGetByEmailAsync(body.email);
+        var userResult = await _accountQueryService.ExecuteGetByEmailAsync(body.email);
 
         var updateUserPasswordResult =
-            await _updateUserService.UpdateUserPassword(userResult.Data!.Id, body.newPassword);
+            await _accountCommandService.ExecuteUpdateUserPasswordService(userResult.Data!.Id, body.newPassword);
 
         return updateUserPasswordResult;
     }

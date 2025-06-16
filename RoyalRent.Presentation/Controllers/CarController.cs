@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RoyalRent.Application.Abstractions.Cars;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Cars.Requests;
 
@@ -8,18 +10,21 @@ namespace RoyalRent.Presentation.Controllers;
 [Route("api/cars")]
 public class CarController : ControllerBase
 {
-    private readonly ICarHandler _carHandler;
-
-    public CarController(ICarHandler carHandler)
+    private readonly ICarCommandService _carCommandService;
+    private readonly ICookiesHandler _cookiesHandler;
+    public CarController(ICookiesHandler cookiesHandler, ICarCommandService carCommandService)
     {
-        _carHandler = carHandler;
+        _cookiesHandler = cookiesHandler;
+        _carCommandService = carCommandService;
     }
 
     [HttpPost("populate")]
+    [Authorize]
     public async Task<IActionResult> UploadCarsDataFromCsvFile(
         [FromForm] InsertFromCsvFileRequest body)
     {
-        var result = await _carHandler.InsertCarsDataByCsvFile(body);
+        _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
+        var result = await _carCommandService.InsertCarsDataByCsvFile(body.File);
 
         if (result.IsFailure)
         {
