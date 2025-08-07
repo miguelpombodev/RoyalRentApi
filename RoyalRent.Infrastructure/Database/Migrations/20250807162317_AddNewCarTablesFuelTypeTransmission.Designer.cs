@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RoyalRent.Infrastructure.Database;
@@ -11,9 +12,11 @@ using RoyalRent.Infrastructure.Database;
 namespace RoyalRent.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250807162317_AddNewCarTablesFuelTypeTransmission")]
+    partial class AddNewCarTablesFuelTypeTransmission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,17 +36,15 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .HasColumnType("UUID")
                         .HasColumnName("carColorId");
 
-                    b.Property<Guid>("CarFuelTypeId")
-                        .HasColumnType("UUID")
-                        .HasColumnName("carFuelTypeId");
+                    b.Property<Guid?>("CarFuelTypeId")
+                        .HasColumnType("UUID");
 
                     b.Property<Guid>("CarMakeId")
                         .HasColumnType("UUID")
                         .HasColumnName("carMakeId");
 
-                    b.Property<Guid>("CarTransmissionsId")
-                        .HasColumnType("UUID")
-                        .HasColumnName("carTransmissionId");
+                    b.Property<Guid?>("CarTransmissionsId")
+                        .HasColumnType("UUID");
 
                     b.Property<Guid>("CarTypeId")
                         .HasColumnType("UUID")
@@ -52,11 +53,6 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("TIMESTAMP WITH TIME ZONE")
                         .HasColumnName("created_on");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR(3000)")
-                        .HasColumnName("description");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -72,14 +68,6 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(40)")
                         .HasColumnName("name");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("DECIMAL(16,2)")
-                        .HasColumnName("price");
-
-                    b.Property<int>("Seats")
-                        .HasColumnType("INT")
-                        .HasColumnName("seats");
 
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("TIMESTAMP WITH TIME ZONE")
@@ -444,12 +432,9 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_CAR_CAR_COLOR");
 
-                    b.HasOne("RoyalRent.Domain.Entities.CarFuelType", "CarFuelType")
+                    b.HasOne("RoyalRent.Domain.Entities.CarFuelType", null)
                         .WithMany("Cars")
-                        .HasForeignKey("CarFuelTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_CAR_CAR_FUEL_TYPE");
+                        .HasForeignKey("CarFuelTypeId");
 
                     b.HasOne("RoyalRent.Domain.Entities.CarMake", "CarMake")
                         .WithMany("Cars")
@@ -458,12 +443,9 @@ namespace RoyalRent.Infrastructure.Database.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_CAR_CAR_MAKE");
 
-                    b.HasOne("RoyalRent.Domain.Entities.CarTransmissions", "CarTransmissions")
+                    b.HasOne("RoyalRent.Domain.Entities.CarTransmissions", null)
                         .WithMany("Cars")
-                        .HasForeignKey("CarTransmissionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_CAR_CAR_TRANSMISSIONS");
+                        .HasForeignKey("CarTransmissionsId");
 
                     b.HasOne("RoyalRent.Domain.Entities.CarType", "CarType")
                         .WithMany("Cars")
@@ -474,11 +456,7 @@ namespace RoyalRent.Infrastructure.Database.Migrations
 
                     b.Navigation("CarColor");
 
-                    b.Navigation("CarFuelType");
-
                     b.Navigation("CarMake");
-
-                    b.Navigation("CarTransmissions");
 
                     b.Navigation("CarType");
                 });

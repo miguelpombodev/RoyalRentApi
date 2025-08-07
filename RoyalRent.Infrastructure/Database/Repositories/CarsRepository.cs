@@ -14,6 +14,8 @@ public class CarsRepository : ICarsRepository
         _carMakeContext = context.Set<CarMake>();
         _carTypeContext = context.Set<CarType>();
         _carColorContext = context.Set<CarColor>();
+        _carTransmissionContext = context.Set<CarTransmissions>();
+        _carFuelTypeContext = context.Set<CarFuelType>();
         _logger = logger;
     }
 
@@ -24,6 +26,8 @@ public class CarsRepository : ICarsRepository
     private readonly DbSet<CarMake> _carMakeContext;
     private readonly DbSet<CarType> _carTypeContext;
     private readonly DbSet<CarColor> _carColorContext;
+    private readonly DbSet<CarTransmissions> _carTransmissionContext;
+    private readonly DbSet<CarFuelType> _carFuelTypeContext;
 
     public async Task<Car> CreateOneCar(Car car)
     {
@@ -53,6 +57,20 @@ public class CarsRepository : ICarsRepository
         var carColorEntry = await _carColorContext.AddAsync(carColor);
 
         return carColorEntry.Entity;
+    }
+
+    public async Task<CarTransmissions> CreateOneCarTransmission(CarTransmissions carTransmissions)
+    {
+        var carTransmissionEntry = await _carTransmissionContext.AddAsync(carTransmissions);
+
+        return carTransmissionEntry.Entity;
+    }
+
+    public async Task<CarFuelType> CreateOneCarFuelType(CarFuelType carFuelType)
+    {
+        var carFuelTypeEntry = await _carFuelTypeContext.AddAsync(carFuelType);
+
+        return carFuelTypeEntry.Entity;
     }
 
     public async Task<T?> GetByName<T>(string name) where T : class

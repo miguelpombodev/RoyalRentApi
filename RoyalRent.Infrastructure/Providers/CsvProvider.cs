@@ -17,8 +17,9 @@ public class CsvProvider : ICsvProvider
     {
         _csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
+            HeaderValidated = null,
             HasHeaderRecord = true,
-            PrepareHeaderForMatch = args => args.Header.ToLower()
+            PrepareHeaderForMatch = args => args.Header.Trim()
         };
         _logger = logger;
     }

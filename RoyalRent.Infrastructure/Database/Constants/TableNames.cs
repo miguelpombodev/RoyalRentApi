@@ -10,4 +10,6 @@ internal static class TableNames
     internal const string CarMakes = nameof(CarMakes);
     internal const string CarTypes = nameof(CarTypes);
     internal const string CarColors = nameof(CarColors);
+    internal const string CarTransmissions = nameof(CarTransmissions);
+    internal const string CarFuelTypes = nameof(CarFuelTypes);
 }

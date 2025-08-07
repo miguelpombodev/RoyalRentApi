@@ -28,6 +28,8 @@ public class CarCommandService : ICarCommandService
         ConcurrentDictionary<string, Guid> makeCache = new();
         ConcurrentDictionary<string, Guid> typeCache = new();
         ConcurrentDictionary<string, Guid> colorCache = new();
+        ConcurrentDictionary<string, Guid> transmissionsCache = new();
+        ConcurrentDictionary<string, Guid> fuelTypeCache = new();
 
         var records = _csvProvider.ReadCsvFile<CarsCsv>(carsCsvFile);
 
@@ -48,9 +50,19 @@ public class CarCommandService : ICarCommandService
                 colorCache,
                 () => _carsRepository.CreateOneCarColor(new CarColor(data.Color)));
 
+            var carTransmissionId = await GetOrCreateEntityIdAsync<CarTransmissions>(
+                data.Color,
+                transmissionsCache,
+                () => _carsRepository.CreateOneCarTransmission(new CarTransmissions(data.Color)));
+
+            var carFuelTypeId = await GetOrCreateEntityIdAsync<CarFuelType>(
+                data.Color,
+                fuelTypeCache,
+                () => _carsRepository.CreateOneCarFuelType(new CarFuelType(data.Color)));
+
 
             var carEntity = new Car(data.Name, data.Model, carMakeId, data.Year, carTypeId,
-                carColorId, data.ImageUrl);
+                carColorId, data.ImageUrl, carTransmissionId, carFuelTypeId, data.Seats, data.Price, data.Description);
 
             await _carsRepository.CreateOneCar(carEntity);
             await _unit.SaveChangesAsync();

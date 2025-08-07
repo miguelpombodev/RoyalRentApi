@@ -58,6 +58,12 @@ public class Startup
             config.SwaggerDoc("v1", new OpenApiInfo { Title = "Web", Version = "v1" });
         });
 
+        services.AddSession(options =>
+        {
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -98,6 +104,7 @@ public class Startup
             options.Cookie.SameSite = SameSiteMode.Strict;
             options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
             options.SlidingExpiration = true;
+            options.Cookie.IsEssential = true;
         });
     }
 
@@ -108,14 +115,21 @@ public class Startup
             app.UseDeveloperExceptionPage();
 
             app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web v1");
+                c.InjectStylesheet("/swagger-ui/SwaggerDarkMode.css");
+            });
 
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web v1"));
+            app.UseStaticFiles();
         }
 
         app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
 
         app.UseRouting();
+
+        app.UseSession();
 
         app.UseGlobalErrorHandler();
 

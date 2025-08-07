@@ -20,6 +20,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.OpenApi"/>
+    <PackageReference Include="oqo0.SwaggerThemes" />
     <PackageReference Include="Scrutor"/>
     <PackageReference Include="Serilog"/>
     <PackageReference Include="Serilog.AspNetCore"/>
@@ -29,6 +30,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger"/>
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen"/>
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\swagger-ui\SwaggerDarkMode.css" />
   </ItemGroup>
 
 </Project>

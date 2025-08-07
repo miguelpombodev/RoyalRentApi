@@ -1,3 +1,4 @@
+using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,7 @@ public class AuthenticatedAccountController : ControllerBase
     }
 
     [HttpPost("driver_license")]
+    [ServiceFilter(typeof(CookiesHandlerAttribute))]
     public async Task<IResult> SaveAccountDriverLicense(CreateUserDriverLicenseDto body)
     {
         var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
@@ -47,9 +49,10 @@ public class AuthenticatedAccountController : ControllerBase
     /// <returns>The user specified by identifier, if exists</returns>
     [HttpGet(Name = "GetAccount")]
     [RedisCache(GetCachedUserKeyPrefix)]
+    [ServiceFilter(typeof(CookiesHandlerAttribute))]
     public async Task<IActionResult> GetAccountInformation()
     {
-        var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
+        var userEmail = Encoding.Default.GetString(HttpContext.Session.Get("session_token")!);
 
         var result = await _accountHandler.GetUserInformationHandler(userEmail);
 

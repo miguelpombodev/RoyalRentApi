@@ -1,3 +1,4 @@
+using AutoMapper;
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Accounts;
 using RoyalRent.Application.Abstractions.Providers;
@@ -13,6 +14,7 @@ public class AccountQueryService : IAccountQueryService
 {
     private readonly IAuthenticationProvider _authProvider;
     private readonly IAccountRepository _accountRepository;
+
 
     public AccountQueryService(IAuthenticationProvider authProvider, IAccountRepository accountRepository)
     {

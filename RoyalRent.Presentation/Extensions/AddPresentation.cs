@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using RoyalRent.Presentation.Abstractions;
+using RoyalRent.Presentation.Attributes;
 using RoyalRent.Presentation.Handlers;
 using RoyalRent.Presentation.Mappings;
 
@@ -17,6 +18,8 @@ public static class AddPresentation
         services.AddFluentValidationAutoValidation();
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddValidatorsFromAssembly(presentationAssembly);
+
+        services.AddScoped<CookiesHandlerAttribute>();
 
         services.AddScoped<IAccountHandler, AccountHandler>();
 
