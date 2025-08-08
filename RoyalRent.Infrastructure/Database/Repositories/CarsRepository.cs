@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RoyalRent.Application.Abstractions.Repositories;
+using RoyalRent.Domain.Data.Models;
 using RoyalRent.Domain.Entities;
 
 namespace RoyalRent.Infrastructure.Database.Repositories;
@@ -71,6 +72,22 @@ public class CarsRepository : ICarsRepository
         var carFuelTypeEntry = await _carFuelTypeContext.AddAsync(carFuelType);
 
         return carFuelTypeEntry.Entity;
+    }
+
+    public async Task<List<GetAvailableCars>> GetAvailableCarsAsync()
+    {
+        var availableCars = await _carContext
+            .Include(car => car.CarMake)
+            .Include(car => car.CarColor)
+            .Include(car => car.CarType)
+            .Include(car => car.CarFuelType)
+            .Include(car => car.CarTransmissions)
+            .AsNoTracking()
+            .Select(car => new GetAvailableCars(car.Name, car.CarType!.Name, car.Price, car.Seats, car.ImageUrl,
+                car.CarTransmissions!.Name, car.CarFuelType!.Name, car.Description))
+            .ToListAsync();
+
+        return availableCars;
     }
 
     public async Task<T?> GetByName<T>(string name) where T : class
