@@ -28,6 +28,14 @@ public sealed class CreateAccountCommandHandler : ICommandHandler<CreateAccountC
 
     private readonly IPasswordHasherProvider _passwordHasher;
 
+    /// <summary>
+    /// This command handler is responsible to create and save a new user account in database.
+    /// </summary>
+    /// <param name="request">A instance of CreateAccountCommand that defines the calling of this Handler</param>
+    /// <param name="cancellationToken">A default cancellationToken</param>
+    /// <returns>If It's successful, it will return a User instance, and if It's not it will return a
+    /// error message and also a error status code based on the error occurred.
+    /// </returns>
     public async Task<Result<User>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
     {
         var checkIfUserExists = await _accountRepository.GetUserByEmail(request.Email);

@@ -225,6 +225,6 @@ public class CarQueryController : ApiController
             return StatusCode(result.Error.StatusCode,
                 new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
 
-        return StatusCode(StatusCodes.Status200OK, new { result.Data });
+        return StatusCode(StatusCodes.Status200OK, result.Data);
     }
 }

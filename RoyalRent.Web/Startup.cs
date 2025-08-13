@@ -8,6 +8,7 @@ using RoyalRent.Application.Extensions;
 using RoyalRent.Infrastructure.Database;
 using RoyalRent.Infrastructure.Extensions;
 using RoyalRent.Presentation.Extensions;
+using RoyalRent.Presentation.Middlewares;
 using RoyalRent.Web.Extensions;
 using Scrutor;
 using Serilog;
@@ -141,6 +142,9 @@ public class Startup
         app.UseSession();
 
         app.UseGlobalErrorHandler();
+
+        // Adding Middlewares and ordering them by their urgency
+        app.UseMiddleware<ResponseMiddleware>();
 
         app.UseAuthentication();
         app.UseAuthorization();

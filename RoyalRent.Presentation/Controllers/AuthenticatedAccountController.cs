@@ -146,7 +146,7 @@ public class AuthenticatedAccountController : ApiController
 
         var mappedUserResponse = _mapper.Map<GetUserResponse>(result.Data);
 
-        return StatusCode(StatusCodes.Status200OK, new { user = mappedUserResponse });
+        return StatusCode(StatusCodes.Status200OK, mappedUserResponse);
     }
 
     /// <summary>
@@ -226,6 +226,6 @@ public class AuthenticatedAccountController : ApiController
                 });
         }
 
-        return StatusCode(StatusCodes.Status200OK, new { user = resultGetDriverLicenseQuery.Data });
+        return StatusCode(StatusCodes.Status200OK, resultGetDriverLicenseQuery.Data);
     }
 }
