@@ -6,6 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\net9.0\RoyalRent.Presentation.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\RoyalRent.Application\RoyalRent.Application.csproj" />
       <ProjectReference Include="..\RoyalRent.Infrastructure\RoyalRent.Infrastructure.csproj" />

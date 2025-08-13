@@ -63,6 +63,8 @@ public class Startup
         services.AddSwaggerGen(config =>
         {
             config.SwaggerDoc("v1", new OpenApiInfo { Title = "Web", Version = "v1" });
+            var filePath = Path.Combine(System.AppContext.BaseDirectory, "RoyalRent.Presentation.xml");
+            config.IncludeXmlComments(filePath);
         });
 
         services.AddSession(options =>

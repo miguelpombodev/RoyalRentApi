@@ -5,9 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-
 namespace RoyalRent.Presentation.Attributes;
 
+/// <summary>
+/// Action filter attribute that implements Redis caching for controller methods.
+/// Automatically caches successful responses and serves cached data when available.
+/// </summary>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class RedisCacheAttribute : Attribute, IAsyncActionFilter
 {
@@ -19,6 +22,11 @@ public sealed class RedisCacheAttribute : Attribute, IAsyncActionFilter
         ContractResolver = new CamelCasePropertyNamesContractResolver()
     };
 
+    /// <summary>
+    /// Initializes a new instance of the RedisCacheAttribute with the specified cache key.
+    /// </summary>
+    /// <param name="cacheKey">The unique cache key for storing and retrieving cached data</param>
+    /// <exception cref="ArgumentException">Thrown when cache key is null or empty</exception>
     public RedisCacheAttribute(string cacheKey)
     {
         if (string.IsNullOrEmpty(cacheKey))
@@ -31,6 +39,17 @@ public sealed class RedisCacheAttribute : Attribute, IAsyncActionFilter
         };
     }
 
+    /// <summary>
+    /// Executes caching logic before and after action execution.
+    /// Checks for cached data first, then caches successful responses.
+    /// </summary>
+    /// <param name="context">The action executing context</param>
+    /// <param name="next">The next action in the pipeline</param>
+    /// <returns>Task representing the asynchronous operation</returns>
+    /// <remarks>
+    /// Returns cached data if available, otherwise executes action and caches successful results.
+    /// Uses 60-second cache expiration and camelCase JSON serialization.
+    /// </remarks>
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var cache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();

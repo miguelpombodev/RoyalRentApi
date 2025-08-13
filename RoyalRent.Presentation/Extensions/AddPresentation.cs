@@ -9,8 +9,21 @@ using RoyalRent.Presentation.Mappings;
 
 namespace RoyalRent.Presentation.Extensions;
 
+/// <summary>
+/// Extension class for configuring presentation layer services in dependency injection.
+/// Registers controllers, validation, mapping, and authentication services.
+/// </summary>
 public static class AddPresentation
 {
+    /// <summary>
+    /// Adds all presentation layer services to the service collection.
+    /// </summary>
+    /// <param name="services">The service collection to add services to</param>
+    /// <returns>The service collection for method chaining</returns>
+    /// <remarks>
+    /// Configures FluentValidation, AutoMapper, controllers with JSON options, and authentication services.
+    /// Sets up circular reference handling and registers custom attributes and handlers.
+    /// </remarks>
     public static IServiceCollection AddPresentationCollection(this IServiceCollection services)
     {
         var presentationAssembly = AssemblyReference.Assembly;
