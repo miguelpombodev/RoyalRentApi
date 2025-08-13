@@ -23,6 +23,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        var applicationAssembly = typeof(Application.AssemblyReference).Assembly;
+
         services.AddDbContext<ApiDbContext>(builder =>
         {
             builder.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDatabase"), pgAction =>
@@ -37,6 +39,11 @@ public class Startup
             builder.EnableSensitiveDataLogging();
         });
 
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(applicationAssembly);
+        });
+
         services.Scan(selector => selector.FromAssemblies(
                 Infrastructure.AssemblyReference.Assembly
             )
@@ -47,7 +54,7 @@ public class Startup
         );
 
         services
-            .AddAplicationCollection()
+            .AddApplicationCollection()
             .AddInfrastructureCollection(Configuration)
             .AddPresentationCollection();
 

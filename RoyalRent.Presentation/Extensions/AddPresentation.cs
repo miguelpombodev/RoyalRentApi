@@ -21,11 +21,11 @@ public static class AddPresentation
 
         services.AddScoped<CookiesHandlerAttribute>();
 
-        services.AddScoped<IAccountHandler, AccountHandler>();
-
         services.AddScoped<ICookiesHandler, CookiesHandler>();
 
-        services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles).AddApplicationPart(presentationAssembly);
+        services.AddControllers()
+            .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+            .AddApplicationPart(presentationAssembly);
 
         return services;
     }

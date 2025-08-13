@@ -1,13 +1,17 @@
 using System.Text;
 using AutoMapper;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RoyalRent.Application.Abstractions.Providers;
+using RoyalRent.Application.Accounts.Commands.CreateDriverLicense;
+using RoyalRent.Application.Accounts.Queries.GetByEmail;
+using RoyalRent.Application.Accounts.Queries.GetUserDriverLicenseById;
 using RoyalRent.Application.DTOs.Inputs;
+using RoyalRent.Application.DTOs.Outputs;
 using RoyalRent.Domain.Entities;
 using RoyalRent.Presentation.Abstractions;
-using RoyalRent.Presentation.Accounts.Responses;
 using RoyalRent.Presentation.Attributes;
 
 namespace RoyalRent.Presentation.Controllers;
@@ -15,19 +19,17 @@ namespace RoyalRent.Presentation.Controllers;
 [ApiController]
 [Route("api/account")]
 [Authorize]
-public class AuthenticatedAccountController : ControllerBase
+public class AuthenticatedAccountController : ApiController
 {
-    private readonly IAccountHandler _accountHandler;
     private readonly ICookiesHandler _cookiesHandler;
     private readonly IMapper _mapper;
 
     private const string GetCachedUserKeyPrefix = "user_cached:";
     private const string GetCachedUserLicenseKeyPrefix = "user_license_cached:";
 
-    public AuthenticatedAccountController(IMapper mapper, IAccountHandler accountHandler, ICookiesHandler cookiesHandler)
+    public AuthenticatedAccountController(IMapper mapper, ICookiesHandler cookiesHandler)
     {
         _mapper = mapper;
-        _accountHandler = accountHandler;
         _cookiesHandler = cookiesHandler;
     }
 
@@ -36,9 +38,9 @@ public class AuthenticatedAccountController : ControllerBase
     public async Task<IResult> SaveAccountDriverLicense(CreateUserDriverLicenseDto body)
     {
         var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
-        var dto = _mapper.Map<CreateUserDriverLicenseDto>(body);
+        var command = (body, userEmail).Adapt<CreateDriverLicenseCommand>();
 
-        await _accountHandler.SaveDriverLicenseHandler(dto, userEmail);
+        await Sender.Send(command);
 
         return Results.CreatedAtRoute("GetDriverLicense");
     }
@@ -54,7 +56,9 @@ public class AuthenticatedAccountController : ControllerBase
     {
         var userEmail = Encoding.Default.GetString(HttpContext.Session.Get("session_token")!);
 
-        var result = await _accountHandler.GetUserInformationHandler(userEmail);
+        var query = new GetByEmailCommand(userEmail);
+
+        var result = await Sender.Send(query);
 
         if (result.IsFailure)
         {
@@ -74,8 +78,39 @@ public class AuthenticatedAccountController : ControllerBase
     {
         var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
 
-        var result = await _accountHandler.GetUserDriverLicenseHandler(userEmail);
+        var query = new GetByEmailCommand(userEmail);
 
-        return StatusCode(StatusCodes.Status200OK, new { user = result.Data });
+        var resultGetUserByEmailQuery = await Sender.Send(query);
+
+        if (resultGetUserByEmailQuery.IsFailure)
+        {
+            return StatusCode(resultGetUserByEmailQuery.Error.StatusCode,
+                new
+                {
+                    error = new
+                    {
+                        ErrorCode = resultGetUserByEmailQuery.Error.Code,
+                        resultGetUserByEmailQuery.Error.Description
+                    }
+                });
+        }
+
+        var getDriverLicenseQuery = new GetUserDriverLicenseByIdCommand(resultGetUserByEmailQuery.Data!.Id);
+        var resultGetDriverLicenseQuery = await Sender.Send(getDriverLicenseQuery);
+
+        if (resultGetDriverLicenseQuery.IsFailure)
+        {
+            return StatusCode(resultGetDriverLicenseQuery.Error.StatusCode,
+                new
+                {
+                    error = new
+                    {
+                        ErrorCode = resultGetDriverLicenseQuery.Error.Code,
+                        resultGetDriverLicenseQuery.Error.Description
+                    }
+                });
+        }
+
+        return StatusCode(StatusCodes.Status200OK, new { user = resultGetDriverLicenseQuery.Data });
     }
 }

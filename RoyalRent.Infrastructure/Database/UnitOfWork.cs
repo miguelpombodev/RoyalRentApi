@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using RoyalRent.Application.Repositories;
+using RoyalRent.Domain.Abstractions;
 
 namespace RoyalRent.Infrastructure.Database;
 

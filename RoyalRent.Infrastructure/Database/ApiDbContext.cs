@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RoyalRent.Application.Abstractions;
 
 namespace RoyalRent.Infrastructure.Database;
 

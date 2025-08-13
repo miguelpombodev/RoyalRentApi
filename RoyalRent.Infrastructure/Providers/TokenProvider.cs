@@ -6,8 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Providers;
-using RoyalRent.Application.Providers.Errors;
 using RoyalRent.Domain.Entities;
+using RoyalRent.Domain.Errors;
 using RoyalRent.Domain.ValueObjects;
 using StackExchange.Redis;
 

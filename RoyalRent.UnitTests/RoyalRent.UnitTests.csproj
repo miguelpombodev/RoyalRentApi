@@ -29,4 +29,8 @@
       <ProjectReference Include="..\RoyalRent.Presentation\RoyalRent.Presentation.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Account\" />
+    </ItemGroup>
+
 </Project>

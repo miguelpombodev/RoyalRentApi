@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Http;
+using RoyalRent.Domain.Errors;
 
 namespace RoyalRent.Application.Abstractions;
 
-public sealed record Error(string Code, int StatusCode, string? Description = null)
-{
-    public static readonly Error None = new(string.Empty, 200);
-}
 public class Result
 {
     public bool IsSuccess { get; }

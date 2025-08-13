@@ -177,6 +177,9 @@ dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 # # Disable rule S6960
 # dotnet_diagnostic.S6960.severity = none
 
+# Disable rule S2094
+dotnet_diagnostic.S2094.severity = none
+
 # error RS2008: Enable analyzer release tracking for the analyzer project containing rule '{0}'
 dotnet_diagnostic.RS2008.severity = none
 

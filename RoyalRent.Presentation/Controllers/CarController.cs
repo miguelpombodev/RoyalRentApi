@@ -1,23 +1,23 @@
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RoyalRent.Application.Abstractions.Cars;
+using RoyalRent.Application.Cars.Commands.CreateCarsDataByCsvFile;
+using RoyalRent.Application.Cars.Queries.GetAvailableCars;
+using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Presentation.Abstractions;
-using RoyalRent.Presentation.Cars.Requests;
 
 namespace RoyalRent.Presentation.Controllers;
 
 [ApiController]
 [Route("api/cars")]
-public class CarCommandController : ControllerBase
+public class CarCommandController : ApiController
 {
-    private readonly ICarCommandService _carCommandService;
     private readonly ICookiesHandler _cookiesHandler;
 
-    public CarCommandController(ICookiesHandler cookiesHandler, ICarCommandService carCommandService)
+    public CarCommandController(ICookiesHandler cookiesHandler)
     {
         _cookiesHandler = cookiesHandler;
-        _carCommandService = carCommandService;
     }
 
     [HttpPost("populate")]
@@ -26,7 +26,9 @@ public class CarCommandController : ControllerBase
         [FromForm] InsertFromCsvFileRequest body)
     {
         _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
-        var result = await _carCommandService.InsertCarsDataByCsvFile(body.File);
+        var command = body.Adapt<CreateCarsDataByCsvFileCommand>();
+
+        var result = await Sender.Send(command);
 
         if (result.IsFailure)
         {
@@ -40,19 +42,13 @@ public class CarCommandController : ControllerBase
 
 [ApiController]
 [Route("api/cars")]
-public class CarQueryController : ControllerBase
+public class CarQueryController : ApiController
 {
-    private readonly ICarQueryService _carQueryService;
-
-    public CarQueryController(ICarQueryService carQueryService)
-    {
-        _carQueryService = carQueryService;
-    }
-
     [HttpGet]
-    public async Task<IActionResult> GetAllAvailableCarsToRentAsync()
+    public async Task<IActionResult> GetAllAvailableCarsToRentAsync(CancellationToken cancellationToken)
     {
-        var result = await _carQueryService.GetAvailableCarsAsync();
+        var query = new GetAvailableCarsQuery();
+        var result = await Sender.Send(query, cancellationToken);
 
         if (result.IsFailure)
             return StatusCode(result.Error.StatusCode,

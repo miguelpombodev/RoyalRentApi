@@ -1,10 +1,9 @@
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Providers;
-using RoyalRent.Application.Accounts.Errors;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Application.DTOs.Outputs;
-using RoyalRent.Application.Providers.Errors;
-using RoyalRent.Application.Repositories;
+using RoyalRent.Domain.Abstractions;
+using RoyalRent.Domain.Errors;
 
 namespace RoyalRent.Infrastructure.Providers;
 
@@ -22,9 +21,9 @@ public class AuthenticationProvider : IAuthenticationProvider
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<Result<AuthResult>> AuthenticateAsync(LoginDto dto)
+    public async Task<Result<AuthResult>> AuthenticateAsync(string email, string password)
     {
-        var user = await _accountRepository.GetUserByEmail(dto.Email);
+        var user = await _accountRepository.GetUserByEmail(email);
 
         if (user is null)
         {
@@ -33,7 +32,7 @@ public class AuthenticationProvider : IAuthenticationProvider
 
         var userPassword = await _accountRepository.GetLastActualUserPassword(user.Id);
 
-        if (userPassword is null || !_passwordHasher.Verify(dto.Password, userPassword.PasswordHashed))
+        if (userPassword is null || !_passwordHasher.Verify(password, userPassword.PasswordHashed))
             return Result<AuthResult>.Failure(AccountErrors.UserAccountPasswordDoesNotMatch);
 
         var accessToken = _tokenProvider.Create(user);

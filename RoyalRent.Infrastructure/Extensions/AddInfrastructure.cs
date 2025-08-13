@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RoyalRent.Application.Abstractions.Providers;
+using RoyalRent.Infrastructure.Database;
 using RoyalRent.Infrastructure.Providers;
 using StackExchange.Redis;
 

@@ -1,31 +1,27 @@
 using AutoMapper;
+using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RoyalRent.Application.DTOs;
-using RoyalRent.Presentation.Abstractions;
-using RoyalRent.Presentation.Accounts.Requests;
+using RoyalRent.Application.Accounts.Commands.CreateAccount;
+using RoyalRent.Application.Accounts.Commands.GenerateRefreshToken;
+using RoyalRent.Application.Accounts.Commands.Logout;
+using RoyalRent.Application.Accounts.Commands.UpdateUserPassword;
+using RoyalRent.Application.Accounts.Queries.GetByEmail;
+using RoyalRent.Application.Accounts.Queries.Login;
+using RoyalRent.Application.DTOs.Inputs;
 
 namespace RoyalRent.Presentation.Controllers;
 
 [ApiController]
 [Route("api/account")]
-public class AccountController : ControllerBase
+public class AccountController : ApiController
 {
-    private readonly IAccountHandler _accountHandler;
-    private readonly IMapper _mapper;
-
-    public AccountController(IMapper mapper, IAccountHandler accountHandler)
-    {
-        _mapper = mapper;
-        _accountHandler = accountHandler;
-    }
-
     [HttpPost]
     public async Task<IActionResult> SaveAccount(CreateAccountRequest body)
     {
-        var dto = _mapper.Map<CreateAccountDto>(body);
+        var command = body.Adapt<CreateAccountCommand>();
 
-        var result = await _accountHandler.SaveAccountHandler(dto);
+        var result = await Sender.Send(command);
 
         if (result.IsFailure)
         {
@@ -39,7 +35,9 @@ public class AccountController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginAccountRequest body)
     {
-        var result = await _accountHandler.LoginHandler(body);
+        var command = body.Adapt<LoginCommand>();
+
+        var result = await Sender.Send(command);
 
         if (result.IsFailure)
         {
@@ -60,7 +58,9 @@ public class AccountController : ControllerBase
         if (string.IsNullOrEmpty(refreshToken))
             StatusCode(StatusCodes.Status401Unauthorized, new { status = "Missing Refresh Token" });
 
-        var result = await _accountHandler.GenerateRefreshTokenHandler(refreshToken!);
+        var command = new GenerateRefreshTokenCommand(refreshToken!);
+
+        var result = await Sender.Send(command);
 
         if (result.IsFailure)
             return StatusCode(result.Error.StatusCode,
@@ -73,11 +73,19 @@ public class AccountController : ControllerBase
     [HttpPost("forgot")]
     public async Task<IActionResult> UpdateUserForgotPassword(ForgotPasswordRequest body)
     {
-        var result = await _accountHandler.UpdateUserForgotPasswordHandler(body);
+        var query = body.Adapt<GetByEmailCommand>();
+        var resultQuery = await Sender.Send(query);
 
-        if (result.IsFailure)
-            return StatusCode(result.Error.StatusCode,
-                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
+        if (resultQuery.IsFailure)
+            return StatusCode(resultQuery.Error.StatusCode,
+                new { error = new { ErrorCode = resultQuery.Error.Code, resultQuery.Error.Description } });
+
+        var command = new UpdateUserPasswordCommand(resultQuery.Data!.Id, body.NewPassword);
+        var resultCommand = await Sender.Send(command);
+
+        if (resultCommand.IsFailure)
+            return StatusCode(resultCommand.Error.StatusCode,
+                new { error = new { ErrorCode = resultCommand.Error.Code, resultCommand.Error.Description } });
 
         return StatusCode(StatusCodes.Status200OK, new { status = "success" });
     }
@@ -89,7 +97,8 @@ public class AccountController : ControllerBase
         if (string.IsNullOrEmpty(refreshToken))
             StatusCode(StatusCodes.Status401Unauthorized, new { status = "Missing Refresh Token" });
 
-        var result = await _accountHandler.LogoutHandler(refreshToken!);
+        var command = new LogoutCommand(refreshToken!);
+        var result = await Sender.Send(command);
 
         if (result.IsFailure)
             return StatusCode(result.Error.StatusCode,

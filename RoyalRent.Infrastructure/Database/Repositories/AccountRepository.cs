@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RoyalRent.Application.Repositories;
+using RoyalRent.Domain.Abstractions;
 using RoyalRent.Domain.Entities;
 
 namespace RoyalRent.Infrastructure.Database.Repositories;

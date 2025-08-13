@@ -1,4 +1,7 @@
 using AutoMapper;
+using Mapster;
+using Microsoft.AspNetCore.Routing.Constraints;
+using RoyalRent.Application.Accounts.Commands.CreateDriverLicense;
 using RoyalRent.Application.Cars.Model;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Application.DTOs.Inputs;
@@ -6,13 +9,27 @@ using RoyalRent.Domain.Entities;
 
 namespace RoyalRent.Application.Mappings;
 
-public class MappingProfile : Profile
+public static class MapsterConfig
 {
-    public MappingProfile()
+    public static void ConfigureMappings()
     {
-        CreateMap<CreateAccountDto, User>().ConstructUsing(dto =>
-            new User(dto.Name, dto.Cpf, dto.Email, dto.Telephone, dto.Gender));
+        TypeAdapterConfig.GlobalSettings.Scan(typeof(MapsterConfig).Assembly);
+    }
 
-        CreateMap<CreateUserDriverLicenseDto, UserDriverLicense>().ReverseMap();
+    public class DriverLicenseMappingProfile : IRegister
+    {
+        public void Register(TypeAdapterConfig config)
+        {
+            config.NewConfig<(CreateUserDriverLicenseDto dto, string userEmail), CreateDriverLicenseCommand>()
+                .MapWith(data => new CreateDriverLicenseCommand(
+                    data.dto.Rg,
+                    data.dto.BirthDate,
+                    data.dto.DriverLicenseNumber,
+                    data.dto.DocumentExpirationDate,
+                    data.dto.State,
+                    null,
+                    data.userEmail
+                ));
+        }
     }
 }
