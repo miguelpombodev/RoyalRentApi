@@ -31,7 +31,7 @@ public class CreateCarsDataByCsvFileCommandHandler : ICommandHandler<CreateCarsD
         ConcurrentDictionary<string, Guid> transmissionsCache = new();
         ConcurrentDictionary<string, Guid> fuelTypeCache = new();
 
-        var records = _csvProvider.ReadCsvFile<CarsCsv>(request.carsCsvFile);
+        var records = _csvProvider.ReadCsvFile<CarsCsv>(request.File);
 
         foreach (var data in records)
         {
@@ -53,12 +53,12 @@ public class CreateCarsDataByCsvFileCommandHandler : ICommandHandler<CreateCarsD
             var carTransmissionId = await GetOrCreateEntityIdAsync<CarTransmissions>(
                 data.Color,
                 transmissionsCache,
-                () => _carsRepository.CreateOneCarTransmission(new CarTransmissions(data.Color)));
+                () => _carsRepository.CreateOneCarTransmission(new CarTransmissions(data.Transmission)));
 
             var carFuelTypeId = await GetOrCreateEntityIdAsync<CarFuelType>(
                 data.Color,
                 fuelTypeCache,
-                () => _carsRepository.CreateOneCarFuelType(new CarFuelType(data.Color)));
+                () => _carsRepository.CreateOneCarFuelType(new CarFuelType(data.FuelType)));
 
 
             var carEntity = new Car(data.Name, data.Model, carMakeId, data.Year, carTypeId,

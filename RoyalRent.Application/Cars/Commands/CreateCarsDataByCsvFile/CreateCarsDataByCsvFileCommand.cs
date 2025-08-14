@@ -4,4 +4,4 @@ using RoyalRent.Application.Abstractions.Messaging;
 
 namespace RoyalRent.Application.Cars.Commands.CreateCarsDataByCsvFile;
 
-public record CreateCarsDataByCsvFileCommand(IFormFile carsCsvFile) : ICommand<Result<string>>;
+public record CreateCarsDataByCsvFileCommand(IFormFile File) : ICommand<Result<string>>;

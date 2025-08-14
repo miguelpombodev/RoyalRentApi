@@ -113,7 +113,7 @@ public class CarCommandController : ApiController
         [FromForm] InsertFromCsvFileRequest body)
     {
         _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
-        var command = body.Adapt<CreateCarsDataByCsvFileCommand>();
+        var command = new CreateCarsDataByCsvFileCommand(body.File);
 
         var result = await Sender.Send(command);
 
@@ -123,7 +123,7 @@ public class CarCommandController : ApiController
                 new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
         }
 
-        return Created("/api/account/", new { status = "success" });
+        return Ok(new { status = "success" });
     }
 }
 

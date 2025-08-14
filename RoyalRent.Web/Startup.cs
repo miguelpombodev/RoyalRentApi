@@ -20,6 +20,8 @@ public class Startup
     public Startup(IConfiguration configuration) => Configuration = configuration;
     public readonly ILoggerFactory factory = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
+    private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
     public IConfiguration Configuration { get; set; }
 
     public void ConfigureServices(IServiceCollection services)
@@ -60,6 +62,16 @@ public class Startup
             .AddPresentationCollection();
 
         services.AddGlobalErrorException();
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+            {
+                policy.WithOrigins("http://localhost:5173");
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+            });
+        });
 
         services.AddSwaggerGen(config =>
         {
@@ -136,12 +148,14 @@ public class Startup
 
         app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
+        app.UseCors(MyAllowSpecificOrigins);
 
         app.UseRouting();
 
         app.UseSession();
 
         app.UseGlobalErrorHandler();
+
 
         // Adding Middlewares and ordering them by their urgency
         app.UseMiddleware<ResponseMiddleware>();
