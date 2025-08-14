@@ -1,3 +1,4 @@
+using RoyalRent.Domain.Abstractions.Filters;
 using RoyalRent.Domain.Data.Models;
 using RoyalRent.Domain.Entities;
 
@@ -11,6 +12,6 @@ public interface ICarsRepository
     Task<CarColor> CreateOneCarColor(CarColor carColor);
     Task<CarFuelType> CreateOneCarFuelType(CarFuelType carFuelType);
     Task<CarTransmissions> CreateOneCarTransmission(CarTransmissions carTransmissions);
-    Task<List<GetAvailableCars>> GetAvailableCarsAsync();
+    Task<List<GetAvailableCars>> GetAvailableCarsAsync(IGetAllAvailableCarsFilters filters);
     Task<T?> GetByName<T>(string name) where T : class;
 }

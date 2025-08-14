@@ -2,24 +2,23 @@ using Microsoft.Extensions.Logging;
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Messaging;
 using RoyalRent.Domain.Abstractions;
+using RoyalRent.Domain.Abstractions.Filters;
 
 namespace RoyalRent.Application.Cars.Queries.GetAvailableCars;
 
 public class GetAvailableCarsQueryHandler : IQueryHandler<GetAvailableCarsQuery, Result<List<GetAvailableCarsResponse>>>
 {
     private readonly ICarsRepository _carsRepository;
-    private readonly ILogger<GetAvailableCarsQueryHandler> _logger;
 
-    public GetAvailableCarsQueryHandler(ICarsRepository carsRepository, ILogger<GetAvailableCarsQueryHandler> logger)
+    public GetAvailableCarsQueryHandler(ICarsRepository carsRepository)
     {
         _carsRepository = carsRepository;
-        _logger = logger;
     }
 
     public async Task<Result<List<GetAvailableCarsResponse>>> Handle(GetAvailableCarsQuery request,
         CancellationToken cancellationToken)
     {
-        var result = await _carsRepository.GetAvailableCarsAsync();
+        var result = await _carsRepository.GetAvailableCarsAsync(request.Filters);
 
         var availableCars = result.Select(car => new GetAvailableCarsResponse(
             car.Name,
@@ -31,8 +30,6 @@ public class GetAvailableCarsQueryHandler : IQueryHandler<GetAvailableCarsQuery,
             car.FuelType,
             car.Description
         )).ToList();
-
-        _logger.LogInformation("Retrieved Available Cars {Cars}", availableCars);
 
         return Result<List<GetAvailableCarsResponse>>.Success(availableCars);
     }

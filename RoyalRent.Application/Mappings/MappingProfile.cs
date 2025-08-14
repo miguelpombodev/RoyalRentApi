@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Routing.Constraints;
 using RoyalRent.Application.Accounts.Commands.CreateDriverLicense;
 using RoyalRent.Application.Cars.Commands.CreateCarsDataByCsvFile;
 using RoyalRent.Application.Cars.Model;
+using RoyalRent.Application.Cars.Queries.GetAvailableCars;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Domain.Entities;

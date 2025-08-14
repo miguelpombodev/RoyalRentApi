@@ -165,6 +165,7 @@ public class CarQueryController : ApiController
     /// Retrieves all cars currently available for rental from the system.
     /// Provides comprehensive information about cars that customers can rent, including availability status and car details.
     /// </summary>
+    /// <param name="request"></param>
     /// <param name="cancellationToken">Cancellation token to support request cancellation for improved responsiveness and resource management</param>
     /// <returns>
     /// Returns HTTP 200 OK with a collection of available car data if the query is successful.
@@ -216,9 +217,10 @@ public class CarQueryController : ApiController
     /// <response code="200">Available cars retrieved successfully</response>
     /// <response code="500">Internal server error during car data retrieval</response>
     [HttpGet]
-    public async Task<IActionResult> GetAllAvailableCarsToRentAsync(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllAvailableCarsToRentAsync(
+        [FromQuery] GetAllAvailableCarsFilters request, CancellationToken cancellationToken)
     {
-        var query = new GetAvailableCarsQuery();
+        var query = new GetAvailableCarsQuery(request);
         var result = await Sender.Send(query, cancellationToken);
 
         if (result.IsFailure)
