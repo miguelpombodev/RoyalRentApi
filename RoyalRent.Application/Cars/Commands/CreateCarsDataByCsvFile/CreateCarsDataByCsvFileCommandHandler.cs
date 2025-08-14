@@ -62,7 +62,8 @@ public class CreateCarsDataByCsvFileCommandHandler : ICommandHandler<CreateCarsD
 
 
             var carEntity = new Car(data.Name, data.Model, carMakeId, data.Year, carTypeId,
-                carColorId, data.ImageUrl, carTransmissionId, carFuelTypeId, data.Seats, data.Price, data.Description);
+                carColorId, data.ImageUrl, carTransmissionId, carFuelTypeId, data.Seats, data.Price, data.Description,
+                data.Featured);
 
             await _carsRepository.CreateOneCar(carEntity);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -25,6 +25,7 @@ public class CarsEntityConfiguration : IEntityTypeConfiguration<Car>
         builder.Property(car => car.Price).HasColumnName("price").HasColumnType("DECIMAL(16,2)").IsRequired();
         builder.Property(car => car.Description).HasColumnName("description").HasColumnType("VARCHAR(3000)").IsRequired();
         builder.Property(car => car.Seats).HasColumnName("seats").HasColumnType("INT").IsRequired();
+        builder.Property(car => car.IsFeatured).HasColumnName("isFeatured").HasColumnType("BOOLEAN").IsRequired().HasDefaultValue(false);
         builder.Property(car => car.CreatedOn).HasColumnName("created_on")
             .HasColumnType("TIMESTAMP WITH TIME ZONE").IsRequired();
         builder.Property(car => car.UpdatedOn).HasColumnName("updated_on")

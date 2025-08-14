@@ -5,7 +5,7 @@ namespace RoyalRent.Application.Cars.Model;
 public class CarsCsv
 {
     public CarsCsv(string imageUrl, string name, string model, string make, int year, string type, string color,
-        decimal price, int seats, string transmission, string fuelType, string description)
+        decimal price, int seats, string transmission, string fuelType, string description, char featured)
     {
         ImageUrl = imageUrl;
         Name = name;
@@ -19,6 +19,7 @@ public class CarsCsv
         Transmission = transmission;
         FuelType = fuelType;
         Description = description;
+        Featured = SetFeaturedValuetoCar(featured);
     }
 
     [Name("imageUrl")] public string ImageUrl { get; set; }
@@ -44,4 +45,12 @@ public class CarsCsv
     [Name("fuel_type")] public string FuelType { get; set; }
 
     [Name("description")] public string Description { get; set; }
+    [Name("featured")] public bool Featured { get; set; }
+
+    private bool SetFeaturedValuetoCar(char featuredCharValue)
+    {
+        if (featuredCharValue.Equals('N')) return false;
+
+        return true;
+    }
 }

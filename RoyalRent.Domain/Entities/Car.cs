@@ -3,7 +3,8 @@ namespace RoyalRent.Domain.Entities;
 public class Car : CarBaseEntity
 {
     public Car(string name, string model, Guid carMakeId, int year, Guid carTypeId, Guid carColorId,
-        string imageUrl, Guid carTransmissionsId, Guid carFuelTypeId, int seats, decimal price, string description) : base(name)
+        string imageUrl, Guid carTransmissionsId, Guid carFuelTypeId, int seats, decimal price, string description,
+        bool isFeatured) : base(name)
     {
         Model = model;
         CarMakeId = carMakeId;
@@ -16,6 +17,7 @@ public class Car : CarBaseEntity
         Price = price;
         CarFuelTypeId = carFuelTypeId;
         Description = description;
+        IsFeatured = isFeatured;
     }
 
     public string Model { get; set; }
@@ -29,6 +31,7 @@ public class Car : CarBaseEntity
     public int Seats { get; set; }
     public decimal Price { get; set; }
     public string Description { get; set; }
+    public bool IsFeatured { get; set; }
     public CarMake? CarMake { get; set; }
     public CarType? CarType { get; set; }
     public CarColor? CarColor { get; set; }
