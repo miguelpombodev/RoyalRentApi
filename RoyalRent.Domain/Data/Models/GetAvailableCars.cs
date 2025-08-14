@@ -2,8 +2,9 @@ namespace RoyalRent.Domain.Data.Models;
 
 public class GetAvailableCars
 {
-    public GetAvailableCars(string name, string category, decimal price, int seats, string imageUrl, string transmission, string fuelType,
-        string description)
+    public GetAvailableCars(string name, string category, decimal price, int seats, string imageUrl,
+        string transmission, string fuelType,
+        string description, bool featured)
     {
         Name = name;
         Category = category;
@@ -13,6 +14,7 @@ public class GetAvailableCars
         Transmission = transmission;
         FuelType = fuelType;
         Description = description;
+        Featured = featured;
     }
 
     public string Name { get; set; }
@@ -23,4 +25,5 @@ public class GetAvailableCars
     public string Transmission { get; set; }
     public string FuelType { get; set; }
     public string Description { get; set; }
+    public bool Featured { get; set; }
 }

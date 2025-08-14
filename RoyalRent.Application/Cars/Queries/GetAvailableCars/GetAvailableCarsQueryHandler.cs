@@ -28,7 +28,8 @@ public class GetAvailableCarsQueryHandler : IQueryHandler<GetAvailableCarsQuery,
             car.ImageUrl,
             car.Transmission,
             car.FuelType,
-            car.Description
+            car.Description,
+            car.Featured
         )).ToList();
 
         return Result<List<GetAvailableCarsResponse>>.Success(availableCars);

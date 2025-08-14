@@ -97,7 +97,10 @@ public class CarsRepository : ICarsRepository
                     car.CarType!.Name,
                     car.Price, car.Seats,
                     car.ImageUrl,
-                    car.CarTransmissions!.Name, car.CarFuelType!.Name, car.Description))
+                    car.CarTransmissions!.Name,
+                    car.CarFuelType!.Name,
+                    car.Description,
+                    car.IsFeatured))
             .ToListAsync();
 
         return availableCars;

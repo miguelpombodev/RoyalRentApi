@@ -8,4 +8,5 @@ public sealed record GetAvailableCarsResponse(
     string imageUrl,
     string transmission,
     string fuelType,
-    string description);
+    string description,
+    bool featured);
