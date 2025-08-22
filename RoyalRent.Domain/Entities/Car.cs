@@ -32,9 +32,9 @@ public class Car : CarBaseEntity
     public decimal Price { get; set; }
     public string Description { get; set; }
     public bool IsFeatured { get; set; }
-    public CarMake? CarMake { get; set; }
-    public CarType? CarType { get; set; }
-    public CarColor? CarColor { get; set; }
-    public CarTransmissions? CarTransmissions { get; set; }
-    public CarFuelType? CarFuelType { get; set; }
+    public CarMake CarMake { get; set; } = null!;
+    public CarType CarType { get; set; } = null!;
+    public CarColor CarColor { get; set; } = null!;
+    public CarTransmissions CarTransmissions { get; set; } = null!;
+    public CarFuelType CarFuelType { get; set; } = null!;
 }

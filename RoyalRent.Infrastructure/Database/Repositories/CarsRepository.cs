@@ -2,16 +2,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RoyalRent.Application.Cars.Queries.GetAvailableCars;
 using RoyalRent.Domain.Abstractions;
+using RoyalRent.Domain.Abstractions.Entities;
 using RoyalRent.Domain.Abstractions.Filters;
 using RoyalRent.Domain.Data.Models;
 using RoyalRent.Domain.Entities;
+using RoyalRent.Domain.Extensions;
 
 namespace RoyalRent.Infrastructure.Database.Repositories;
 
 public class CarsRepository : ICarsRepository
 {
-    public CarsRepository(ApiDbContext context, ILogger<CarsRepository> logger)
+    public CarsRepository(ApiDbContext context, IDbContextFactory<ApiDbContext> factory, ILogger<CarsRepository> logger)
     {
+        _factory = factory;
         _context = context;
         _carContext = context.Set<Car>();
         _carMakeContext = context.Set<CarMake>();
@@ -25,6 +28,7 @@ public class CarsRepository : ICarsRepository
     private readonly ILogger _logger;
 
     private readonly ApiDbContext _context;
+    private readonly IDbContextFactory<ApiDbContext> _factory;
     private readonly DbSet<Car> _carContext;
     private readonly DbSet<CarMake> _carMakeContext;
     private readonly DbSet<CarType> _carTypeContext;
@@ -76,7 +80,8 @@ public class CarsRepository : ICarsRepository
         return carFuelTypeEntry.Entity;
     }
 
-    public async Task<List<GetAvailableCars>> GetAvailableCarsAsync(IGetAllAvailableCarsFilters filters)
+    public async Task<List<GetAvailableCars>> GetAvailableCarsAsync(IGetAllAvailableCarsFilters filters,
+        ICarSortRequest sort)
     {
         var availableCarsQuery = _carContext
             .Include(car => car.CarMake)
@@ -84,12 +89,14 @@ public class CarsRepository : ICarsRepository
             .Include(car => car.CarType)
             .Include(car => car.CarFuelType)
             .Include(car => car.CarTransmissions)
-            .AsNoTracking();
-
-        if (filters.IsFeatured)
-        {
-            availableCarsQuery = availableCarsQuery.Where(car => car.IsFeatured.Equals(filters.IsFeatured));
-        }
+            .AsNoTracking()
+            .WhereIf(filters.IsFeatured, car => car.IsFeatured.Equals(filters.IsFeatured))
+            .WhereIfAny(filters.CarColorNames, car => filters.CarColorNames.Contains(car.CarColor.Name))
+            .WhereIfAny(filters.CarFuelTypeNames, car => filters.CarFuelTypeNames.Contains(car.CarFuelType.Name))
+            .WhereIfAny(filters.CarTransmissionsNames,
+                car => filters.CarTransmissionsNames.Contains(car.CarTransmissions.Name))
+            .WhereIfAny(filters.CarTypeNames, car => filters.CarTypeNames.Contains(car.CarType.Name))
+            .ApplySorting(sort);
 
         var availableCars = await availableCarsQuery.Select(car =>
                 new GetAvailableCars(
@@ -104,6 +111,12 @@ public class CarsRepository : ICarsRepository
             .ToListAsync();
 
         return availableCars;
+    }
+
+    public async Task<List<string>> GetFilterValues<T>() where T : class, ICarBaseEntity
+    {
+        await using var context = await _factory.CreateDbContextAsync();
+        return await context.Set<T>().AsNoTracking().Select(t => t.Name).Distinct().ToListAsync();
     }
 
     public async Task<T?> GetByName<T>(string name) where T : class

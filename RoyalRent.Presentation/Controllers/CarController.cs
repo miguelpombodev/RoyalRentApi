@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RoyalRent.Application.Cars.Commands.CreateCarsDataByCsvFile;
 using RoyalRent.Application.Cars.Queries.GetAvailableCars;
+using RoyalRent.Application.Cars.Queries.GetAvailableCarsFiltersValues;
 using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Presentation.Abstractions;
 
@@ -166,6 +167,7 @@ public class CarQueryController : ApiController
     /// Provides comprehensive information about cars that customers can rent, including availability status and car details.
     /// </summary>
     /// <param name="request"></param>
+    /// <param name="sort"></param>
     /// <param name="cancellationToken">Cancellation token to support request cancellation for improved responsiveness and resource management</param>
     /// <returns>
     /// Returns HTTP 200 OK with a collection of available car data if the query is successful.
@@ -218,9 +220,29 @@ public class CarQueryController : ApiController
     /// <response code="500">Internal server error during car data retrieval</response>
     [HttpGet]
     public async Task<IActionResult> GetAllAvailableCarsToRentAsync(
-        [FromQuery] GetAllAvailableCarsFilters request, CancellationToken cancellationToken)
+        [FromQuery] GetAllAvailableCarsFilters request, [FromQuery] CarSortRequest sort,
+        CancellationToken cancellationToken)
     {
-        var query = new GetAvailableCarsQuery(request);
+        var query = new GetAvailableCarsQuery(request, sort);
+        var result = await Sender.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+            return StatusCode(result.Error.StatusCode,
+                new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
+
+        return StatusCode(StatusCodes.Status200OK, result.Data);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("filters")]
+    public async Task<IActionResult> GetAllAvailableCarsFiltersValuesAsync(
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAvailableCarsFiltersValuesQuery();
         var result = await Sender.Send(query, cancellationToken);
 
         if (result.IsFailure)

@@ -42,6 +42,8 @@ public class Startup
             builder.EnableSensitiveDataLogging();
         });
 
+        services.AddDbContextFactory<ApiDbContext>(lifetime: ServiceLifetime.Scoped);
+
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(applicationAssembly);
@@ -78,6 +80,7 @@ public class Startup
             config.SwaggerDoc("v1", new OpenApiInfo { Title = "Web", Version = "v1" });
             var filePath = Path.Combine(System.AppContext.BaseDirectory, "RoyalRent.Presentation.xml");
             config.IncludeXmlComments(filePath);
+            config.UseInlineDefinitionsForEnums();
         });
 
         services.AddSession(options =>
@@ -149,7 +152,6 @@ public class Startup
         app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
         app.UseCors(MyAllowSpecificOrigins);
-
         app.UseRouting();
 
         app.UseSession();

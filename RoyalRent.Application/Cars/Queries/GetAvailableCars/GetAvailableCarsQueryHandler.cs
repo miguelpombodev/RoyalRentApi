@@ -18,7 +18,7 @@ public class GetAvailableCarsQueryHandler : IQueryHandler<GetAvailableCarsQuery,
     public async Task<Result<List<GetAvailableCarsResponse>>> Handle(GetAvailableCarsQuery request,
         CancellationToken cancellationToken)
     {
-        var result = await _carsRepository.GetAvailableCarsAsync(request.Filters);
+        var result = await _carsRepository.GetAvailableCarsAsync(request.Filters, request.Sort);
 
         var availableCars = result.Select(car => new GetAvailableCarsResponse(
             car.Name,

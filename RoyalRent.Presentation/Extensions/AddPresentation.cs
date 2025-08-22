@@ -37,7 +37,11 @@ public static class AddPresentation
         services.AddScoped<ICookiesHandler, CookiesHandler>();
 
         services.AddControllers()
-            .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            })
             .AddApplicationPart(presentationAssembly);
 
         return services;

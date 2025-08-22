@@ -1,6 +1,8 @@
+using RoyalRent.Domain.Abstractions.Entities;
+
 namespace RoyalRent.Domain.Entities;
 
-public class CarType : CarBaseEntity
+public class CarType : CarBaseEntity, ICarBaseEntity
 {
     public CarType(string name) : base(name) { }
 
