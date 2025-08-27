@@ -1,6 +1,8 @@
+using RoyalRent.Domain.Abstractions.Entities;
+
 namespace RoyalRent.Domain.Entities;
 
-public class Car : CarBaseEntity
+public class Car : CarBaseEntity, ICarBaseEntity
 {
     public Car(string name, string model, Guid carMakeId, int year, Guid carTypeId, Guid carColorId,
         string imageUrl, Guid carTransmissionsId, Guid carFuelTypeId, int seats, decimal price, string description,
@@ -37,4 +39,5 @@ public class Car : CarBaseEntity
     public CarColor CarColor { get; set; } = null!;
     public CarTransmissions CarTransmissions { get; set; } = null!;
     public CarFuelType CarFuelType { get; set; } = null!;
+    public ICollection<Rent> Rents { get; set; } = new List<Rent>();
 }

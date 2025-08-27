@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RoyalRent.Infrastructure.Database;
@@ -11,9 +12,11 @@ using RoyalRent.Infrastructure.Database;
 namespace RoyalRent.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250827152843_AddRentsPaymentsAndPaymentsStatusTables")]
+    partial class AddRentsPaymentsAndPaymentsStatusTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,7 +155,7 @@ namespace RoyalRent.Infrastructure.Database.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("VARCHAR(20)")
+                        .HasColumnType("VARCHAR(10)")
                         .HasColumnName("name");
 
                     b.Property<DateTime>("UpdatedOn")

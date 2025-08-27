@@ -13,7 +13,7 @@ public class CarFuelTypesEntityConfiguration : IEntityTypeConfiguration<CarFuelT
         builder.HasKey(color => color.Id);
 
         builder.Property(color => color.Id).HasColumnName("id").HasColumnType("UUID").IsRequired();
-        builder.Property(color => color.Name).HasColumnName("name").HasColumnType("VARCHAR(10)").IsRequired();
+        builder.Property(color => color.Name).HasColumnName("name").HasColumnType("VARCHAR(20)").IsRequired();
         builder.Property(color => color.CreatedOn).HasColumnName("created_on")
             .HasColumnType("TIMESTAMP WITH TIME ZONE").IsRequired();
         builder.Property(color => color.UpdatedOn).HasColumnName("updated_on")
