@@ -12,6 +12,7 @@ using RoyalRent.Application.Accounts.Queries.GetUserDriverLicenseById;
 using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Application.DTOs.Outputs;
 using RoyalRent.Domain.Entities;
+using RoyalRent.Domain.Users.Entities;
 using RoyalRent.Presentation.Abstractions;
 using RoyalRent.Presentation.Attributes;
 

@@ -28,9 +28,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Accounts\Errors\" />
-      <Folder Include="Behaviors\" />
-      <Folder Include="Providers\Errors\" />
+      <Folder Include="Payments\DTOs\" />
+      <Folder Include="Rents\Commands\" />
+      <Folder Include="Users\Errors\" />
     </ItemGroup>
 
 </Project>

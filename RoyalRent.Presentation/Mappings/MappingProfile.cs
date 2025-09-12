@@ -3,6 +3,7 @@ using RoyalRent.Application.DTOs;
 using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Application.DTOs.Outputs;
 using RoyalRent.Domain.Entities;
+using RoyalRent.Domain.Users.Entities;
 
 namespace RoyalRent.Presentation.Mappings;
 

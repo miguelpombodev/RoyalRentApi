@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RoyalRent.Infrastructure.Database;
+using RoyalRent.Infrastructure.Persistence;
 using Serilog;
 
 namespace RoyalRent.Web;

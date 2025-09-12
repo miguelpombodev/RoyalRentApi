@@ -2,13 +2,13 @@ using AutoMapper;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RoyalRent.Application.Accounts.Commands.CreateAccount;
 using RoyalRent.Application.Accounts.Commands.GenerateRefreshToken;
 using RoyalRent.Application.Accounts.Commands.Logout;
 using RoyalRent.Application.Accounts.Commands.UpdateUserPassword;
 using RoyalRent.Application.Accounts.Queries.GetByEmail;
 using RoyalRent.Application.Accounts.Queries.Login;
 using RoyalRent.Application.DTOs.Inputs;
+using RoyalRent.Application.Users.Commands.CreateAccount;
 
 namespace RoyalRent.Presentation.Controllers;
 

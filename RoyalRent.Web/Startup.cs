@@ -7,11 +7,13 @@ using Microsoft.OpenApi.Models;
 using RoyalRent.Application.Extensions;
 using RoyalRent.Infrastructure.Database;
 using RoyalRent.Infrastructure.Extensions;
+using RoyalRent.Infrastructure.Persistence;
 using RoyalRent.Presentation.Extensions;
 using RoyalRent.Presentation.Middlewares;
 using RoyalRent.Web.Extensions;
 using Scrutor;
 using Serilog;
+using Stripe;
 
 namespace RoyalRent.Web;
 
@@ -26,11 +28,17 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        StripeConfiguration.ApiKey = Configuration.GetValue<string>("Stripe:SecretKey") ??
+                                     throw new ArgumentException("Stripe Key must be set to initiate application");
+
         var applicationAssembly = typeof(Application.AssemblyReference).Assembly;
+
+        var mainDbName = Configuration.GetValue<string>("DbNames:MainDatabaseName") ??
+                         throw new ArgumentException("Database must be set to initiate application");
 
         services.AddDbContext<ApiDbContext>(builder =>
         {
-            builder.UseNpgsql(Configuration.GetConnectionString("PostgreSQLDatabase"), pgAction =>
+            builder.UseNpgsql(Configuration.GetConnectionString(mainDbName), pgAction =>
             {
                 pgAction.EnableRetryOnFailure(3);
                 pgAction.CommandTimeout(30);

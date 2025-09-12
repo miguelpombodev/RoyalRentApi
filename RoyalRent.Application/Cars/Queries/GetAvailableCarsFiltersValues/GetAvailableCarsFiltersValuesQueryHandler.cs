@@ -1,6 +1,7 @@
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Messaging;
 using RoyalRent.Domain.Abstractions;
+using RoyalRent.Domain.Cars.Interfaces;
 using RoyalRent.Domain.Entities;
 
 namespace RoyalRent.Application.Cars.Queries.GetAvailableCarsFiltersValues;

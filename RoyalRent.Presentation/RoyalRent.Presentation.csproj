@@ -21,6 +21,7 @@
       <PackageReference Include="FluentValidation.AspNetCore" />
       <PackageReference Include="Mapster" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core"/>
+      <PackageReference Include="Stripe.net" />
     </ItemGroup>
 
 </Project>

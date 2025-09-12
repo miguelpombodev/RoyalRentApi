@@ -1,8 +1,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RoyalRent.Application.Abstractions.Providers;
+using RoyalRent.Infrastructure.Authentication;
+using RoyalRent.Infrastructure.Cache;
 using RoyalRent.Infrastructure.Database;
-using RoyalRent.Infrastructure.Providers;
+using RoyalRent.Infrastructure.Hasher;
 using StackExchange.Redis;
 
 namespace RoyalRent.Infrastructure.Extensions;

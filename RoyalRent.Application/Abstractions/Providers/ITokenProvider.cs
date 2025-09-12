@@ -1,4 +1,5 @@
 using RoyalRent.Domain.Entities;
+using RoyalRent.Domain.Users.Entities;
 
 namespace RoyalRent.Application.Abstractions.Providers;
 

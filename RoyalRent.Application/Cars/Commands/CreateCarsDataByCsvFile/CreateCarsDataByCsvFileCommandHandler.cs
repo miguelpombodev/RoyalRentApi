@@ -4,6 +4,9 @@ using RoyalRent.Application.Abstractions.Messaging;
 using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Application.Cars.Model;
 using RoyalRent.Domain.Abstractions;
+using RoyalRent.Domain.Cars.Entities;
+using RoyalRent.Domain.Cars.Interfaces;
+using RoyalRent.Domain.Common.Entities;
 using RoyalRent.Domain.Entities;
 
 namespace RoyalRent.Application.Cars.Commands.CreateCarsDataByCsvFile;
