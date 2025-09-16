@@ -9,4 +9,4 @@ namespace RoyalRent.Application.Rents.Commands.CreateRentCommand;
 public sealed record CreateRentCommand(Guid CarId,
     DateTime StartDate,
     DateTime EndDate,
-    Guid UserId) : ICommand<Result<IntentPaymentsInformation>>;
+    Guid UserId) : ICommand<Result<RentPaymentData>>;

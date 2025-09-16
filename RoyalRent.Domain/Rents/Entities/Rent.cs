@@ -59,7 +59,8 @@ public class Rent : BaseEntity
 
     public int GetRentDaysTotal()
     {
-        var span = GetRentDurationSpan();
-        return (int)Math.Ceiling(span.TotalDays);
+        var span = (int)Math.Ceiling(GetRentDurationSpan().TotalDays);
+
+        return span == 0 ? 1 : span;
     }
 }

@@ -1,3 +1,4 @@
+using Mapster;
 using Microsoft.Extensions.Logging;
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Messaging;
@@ -11,7 +12,7 @@ using RoyalRent.Domain.Rents.Services;
 
 namespace RoyalRent.Application.Rents.Commands.CreateRentCommand;
 
-public class CreateRentCommandHandler : ICommandHandler<CreateRentCommand, Result<IntentPaymentsInformation>>
+public class CreateRentCommandHandler : ICommandHandler<CreateRentCommand, Result<RentPaymentData>>
 {
     private readonly IPaymentProcessor _paymentProcessor;
     private readonly ICarsRepository _carsRepository;
@@ -31,7 +32,7 @@ public class CreateRentCommandHandler : ICommandHandler<CreateRentCommand, Resul
         _rentDomainServices = rentDomainServices;
     }
 
-    public async Task<Result<IntentPaymentsInformation>> Handle(CreateRentCommand command,
+    public async Task<Result<RentPaymentData>> Handle(CreateRentCommand command,
         CancellationToken cancellationToken)
     {
         var car = await _carsRepository.GetCarById(command.CarId);
@@ -40,7 +41,7 @@ public class CreateRentCommandHandler : ICommandHandler<CreateRentCommand, Resul
         {
             _logger.LogWarning("Tried to find car with id {RequestedCarId} but there's no data for the mentioned id",
                 command.CarId);
-            return Result<IntentPaymentsInformation>.Failure(CarsErrors.CarNotFound);
+            return Result<RentPaymentData>.Failure(CarsErrors.CarNotFound);
         }
 
         var rent = _rentDomainServices.CreateRent(command.UserId, car, command.StartDate,
@@ -64,6 +65,8 @@ public class CreateRentCommandHandler : ICommandHandler<CreateRentCommand, Resul
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result<IntentPaymentsInformation>.Success(intentPaymentsInformation);
+        var result = intentPaymentsInformation.Adapt<RentPaymentData>();
+
+        return Result<RentPaymentData>.Success(result);
     }
 }

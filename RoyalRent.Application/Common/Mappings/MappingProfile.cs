@@ -8,6 +8,7 @@ using RoyalRent.Application.Cars.Queries.GetAvailableCars;
 using RoyalRent.Application.DTOs;
 using RoyalRent.Application.DTOs.Inputs;
 using RoyalRent.Domain.Entities;
+using RoyalRent.Domain.Payments.Entities;
 
 namespace RoyalRent.Application.Mappings;
 
@@ -31,6 +32,10 @@ public static class MapsterConfig
                     data.dto.State,
                     null,
                     data.userEmail
+                ));
+
+            config.NewConfig<IntentPaymentsInformation, RentPaymentData>().MapWith(data => new RentPaymentData(
+                    data.GetClientSecret(), data.GetPaymentStatus()
                 ));
         }
     }

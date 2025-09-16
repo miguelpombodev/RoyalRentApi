@@ -21,6 +21,11 @@ public sealed class IntentPaymentsInformation
         return this;
     }
 
+    public string GetClientSecret()
+    {
+        return ClientSecret;
+    }
+
     public string GetPaymentStatus()
     {
         return Status;
