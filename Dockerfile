@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
+﻿FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src
@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.nuget/packages \
     -c $BUILD_CONFIGURATION -o /app/publish \
     /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 ARG APP_USER=app
 ARG APP_UID=1000
 
@@ -42,4 +42,4 @@ COPY --from=build --chown=${APP_USER}:${APP_USER} /app/publish .
 
 USER ${APP_USER}
 
-ENTRYPOINT ["dotnet", "RoyalRent.Web/RoyalRent.Web.dll"]
+ENTRYPOINT ["dotnet", "RoyalRent.Web.dll"]

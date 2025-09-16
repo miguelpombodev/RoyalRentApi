@@ -1,6 +1,19 @@
 version: "3.4"
 
 services:
+  api_container:
+    build:
+      context: .
+    container_name: royal_rent_api
+    networks:
+      - royal_net
+    ports:
+      - '8080:8080'
+    depends_on:
+      - database
+      - redis
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
   database:
     image: postgres
     ports:
