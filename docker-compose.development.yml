@@ -1,0 +1,37 @@
+version: "3.4"
+
+services:
+  database:
+    image: postgres
+    ports:
+      - '5432:5432'
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d RoyalRentDB -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    container_name: royal_rent_database
+    networks:
+      - royal_net
+    environment:
+      - POSTGRES_PASSWORD=docker123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    restart: always
+    container_name: royal_rent_redis
+    networks:
+      - royal_net
+    command:  redis-server --requirepass RoyalRentRedis123!
+
+networks:
+  royal_net:
+    driver: bridge
+
+volumes:
+  pgdata:
