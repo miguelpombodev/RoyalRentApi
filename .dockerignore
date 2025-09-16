@@ -1,25 +1,57 @@
-﻿**/.dockerignore
-**/.env
-**/.git
-**/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
-**/.vs
-**/.vscode
-**/.idea
-**/*.*proj.user
-**/*.dbmdl
-**/*.jfm
-**/azds.yaml
-**/bin
-**/charts
-**/docker-compose*
+﻿# Build outputs
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# NuGet packages
+**/packages/
+**/.nuget/
+
+# Visual Studio
+**/.vs/
+**/.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test results
+**/TestResults/
+**/*.trx
+
+# Coverage reports
+**/coverage/
+**/*.coverage
+**/*.coveragexml
+
+# Runtime files
+*.log
+*.tmp
+
+# Docker
+**/.dockerignore
 **/Dockerfile*
-**/node_modules
-**/npm-debug.log
-**/obj
-**/secrets.dev.yaml
-**/values.dev.yaml
-LICENSE
-README.md
+**/docker-compose*
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+**/README.md
+**/*.md
+
+# IDE files
+**/.idea/
+**/*.swp
+**/*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
