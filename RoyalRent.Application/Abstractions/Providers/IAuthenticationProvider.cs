@@ -1,4 +1,5 @@
 using RoyalRent.Application.DTOs.Outputs;
+using RoyalRent.Application.Users.DTOs;
 
 namespace RoyalRent.Application.Abstractions.Providers;
 

@@ -15,5 +15,5 @@ public interface ICookiesHandler
     /// <returns>The JWT token string extracted from the cookies</returns>
     /// <exception cref="ArgumentNullException">Thrown when cookies collection is null</exception>
     /// <exception cref="InvalidOperationException">Thrown when JWT token is not found in cookies</exception>
-    string ExtractJwtTokenFromCookie(IRequestCookieCollection cookies);
+    Task<string> ExtractJwtTokenFromCookie(IRequestCookieCollection cookies);
 }

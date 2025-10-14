@@ -39,7 +39,7 @@ public class CookiesHandlerAttribute : Attribute, IAsyncActionFilter
             };
         }
 
-        var decodedToken = tokenProvider.Decode(accessToken!);
+        var decodedToken = await tokenProvider.Decode(accessToken!);
 
         context.HttpContext.Session.Set("session_token", Encoding.ASCII.GetBytes(decodedToken));
 

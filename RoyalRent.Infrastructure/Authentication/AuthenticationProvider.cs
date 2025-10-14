@@ -1,6 +1,7 @@
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Application.DTOs.Outputs;
+using RoyalRent.Application.Users.DTOs;
 using RoyalRent.Domain.Abstractions;
 using RoyalRent.Domain.Errors;
 

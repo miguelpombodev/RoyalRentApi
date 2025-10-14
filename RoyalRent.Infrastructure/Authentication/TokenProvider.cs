@@ -9,6 +9,7 @@ using RoyalRent.Application.Abstractions.Providers;
 using RoyalRent.Domain.Entities;
 using RoyalRent.Domain.Errors;
 using RoyalRent.Domain.Users.Entities;
+using RoyalRent.Domain.Users.ValueObjects;
 using RoyalRent.Domain.ValueObjects;
 using StackExchange.Redis;
 
@@ -20,6 +21,7 @@ public class TokenProvider : ITokenProvider
     private readonly IDatabase _redis;
 
     private const string RedisRefreshTokenPrefix = "refresh_token:";
+    private readonly TokenValidationParameters _validationParameters;
 
     private readonly Jwt _jwt;
 
@@ -31,24 +33,28 @@ public class TokenProvider : ITokenProvider
         _redis = redis.GetDatabase();
 
         _jwt = Jwt.Create(jwtConfigurationDict);
+        _validationParameters = BuildTokenValidationParameters(jwtConfigurationDict);
     }
 
     public string Create(User user)
     {
         var credentials = _buildCredentials();
 
-        var tokenDescriptor = _buildTokenDescriptor(credentials, user);
+        var tokenDescriptor = BuildTokenDescriptor(credentials, user);
 
         var token = _handler.CreateToken(tokenDescriptor);
 
         return _handler.WriteToken(token);
     }
 
-    public string Decode(string token)
+    public async Task<string> Decode(string token)
     {
         var splittedToken = token.Split(" ").First(c => c != "Bearer");
 
+        await _handler.ValidateTokenAsync(splittedToken, _validationParameters);
+
         var decodedToken = _handler.ReadToken(splittedToken);
+
 
         var tokenInfo = decodedToken as JwtSecurityToken;
         return tokenInfo!.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Email).Value;
@@ -65,7 +71,7 @@ public class TokenProvider : ITokenProvider
 
     public async Task<bool> ReplaceRefreshTokenAsync(Guid userId, string newRefreshToken)
     {
-        var key = RedisRefreshTokenPrefix.Concat(newRefreshToken).ToString();
+        var key = BuildRedisTokenKey(newRefreshToken);
 
         var ttl = TimeSpan.FromDays(7);
         var userData = $"{userId}";
@@ -73,9 +79,14 @@ public class TokenProvider : ITokenProvider
         return await _redis.StringSetAsync(key, userData, ttl);
     }
 
+    private string BuildRedisTokenKey(string newRefreshToken)
+    {
+        return $"{RedisRefreshTokenPrefix}{newRefreshToken}";
+    }
+
     public async Task<Result<Guid>> ValidateRefreshTokenAsync(string refreshToken)
     {
-        var key = RedisRefreshTokenPrefix.Concat(refreshToken).ToString();
+        var key = BuildRedisTokenKey(refreshToken);
         var value = await _redis.StringGetAsync(key);
 
         if (value.IsNullOrEmpty)
@@ -98,7 +109,7 @@ public class TokenProvider : ITokenProvider
         return new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
     }
 
-    private SecurityTokenDescriptor _buildTokenDescriptor(SigningCredentials credentials, User user)
+    private SecurityTokenDescriptor BuildTokenDescriptor(SigningCredentials credentials, User user)
     {
         var now = DateTime.UtcNow;
 
@@ -113,6 +124,20 @@ public class TokenProvider : ITokenProvider
             SigningCredentials = credentials,
             Issuer = _jwt.Issuer,
             Audience = _jwt.Audience,
+        };
+    }
+
+    private TokenValidationParameters BuildTokenValidationParameters(Dictionary<string, string?> jwtConfiguration)
+    {
+        return new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtConfiguration["Jwt:Issuer"],
+            ValidAudience = jwtConfiguration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration["Jwt:Secret"]!))
         };
     }
 }

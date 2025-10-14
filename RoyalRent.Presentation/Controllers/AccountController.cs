@@ -208,7 +208,7 @@ public class AccountController : ApiController
                 new { error = new { ErrorCode = result.Error.Code, result.Error.Description } });
 
         SetRefreshTokenCookie(result.Data!.RefreshToken);
-        return StatusCode(StatusCodes.Status200OK, new { token = result.Data.AccessToken });
+        return StatusCode(StatusCodes.Status204NoContent);
     }
 
     /// <summary>
@@ -369,7 +369,7 @@ public class AccountController : ApiController
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddMinutes(60)
+                Expires = DateTime.UtcNow.AddDays(7)
             });
     }
 

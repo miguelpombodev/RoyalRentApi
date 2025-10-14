@@ -30,11 +30,11 @@ public class CookiesHandler : ICookiesHandler
     /// Retrieves the "access_token" cookie and decodes it using the token provider.
     /// Assumes the access token exists in the cookie collection.
     /// </remarks>
-    public string ExtractJwtTokenFromCookie(IRequestCookieCollection cookies)
+    public async Task<string> ExtractJwtTokenFromCookie(IRequestCookieCollection cookies)
     {
         var access_token = cookies["access_token"]!;
 
-        var decodedToken = _tokenProvider.Decode(access_token);
+        var decodedToken = await _tokenProvider.Decode(access_token);
 
         return decodedToken;
     }

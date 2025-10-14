@@ -57,19 +57,20 @@ public class Startup
             config.RegisterServicesFromAssembly(applicationAssembly);
         });
 
-        services.Scan(selector => selector.FromAssemblies(
-                Infrastructure.AssemblyReference.Assembly
-            )
-            .AddClasses(false)
-            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsImplementedInterfaces()
-            .WithScopedLifetime()
-        );
-
         services
             .AddApplicationCollection()
             .AddInfrastructureCollection(Configuration)
             .AddPresentationCollection();
+
+        services.Scan(selector => selector.FromAssemblies(
+                Infrastructure.AssemblyReference.Assembly
+            )
+            .AddClasses(false)
+            .UsingRegistrationStrategy(RegistrationStrategy.Skip) // Skip vai pular os já registrados
+            .AsImplementedInterfaces()
+            .WithScopedLifetime()
+        );
+
 
         services.AddGlobalErrorException();
 

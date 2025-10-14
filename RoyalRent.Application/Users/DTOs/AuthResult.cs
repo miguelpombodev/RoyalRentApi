@@ -1,4 +1,4 @@
-namespace RoyalRent.Application.DTOs.Outputs;
+namespace RoyalRent.Application.Users.DTOs;
 
 public class AuthResult
 {

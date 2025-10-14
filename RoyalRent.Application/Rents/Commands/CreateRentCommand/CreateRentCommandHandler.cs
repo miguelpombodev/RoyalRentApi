@@ -8,6 +8,7 @@ using RoyalRent.Domain.Cars.Errors;
 using RoyalRent.Domain.Cars.Interfaces;
 using RoyalRent.Domain.Payments.Entities;
 using RoyalRent.Domain.Payments.Interfaces;
+using RoyalRent.Domain.Rents.Entities;
 using RoyalRent.Domain.Rents.Services;
 
 namespace RoyalRent.Application.Rents.Commands.CreateRentCommand;
@@ -19,10 +20,11 @@ public class CreateRentCommandHandler : ICommandHandler<CreateRentCommand, Resul
     private readonly IPaymentRepository _paymentRepository;
     private readonly ILogger<CreateRentCommandHandler> _logger;
     private readonly IRentDomainServices _rentDomainServices;
+    private readonly IServiceBusProvider _serviceBusProvider;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateRentCommandHandler(IPaymentProcessor paymentProcessor, ICarsRepository carsRepository,
-        ILogger<CreateRentCommandHandler> logger, IPaymentRepository paymentRepository, IUnitOfWork unitOfWork, IRentDomainServices rentDomainServices)
+        ILogger<CreateRentCommandHandler> logger, IPaymentRepository paymentRepository, IUnitOfWork unitOfWork, IRentDomainServices rentDomainServices, IServiceBusProvider serviceBusProvider)
     {
         _paymentProcessor = paymentProcessor;
         _carsRepository = carsRepository;
@@ -30,6 +32,7 @@ public class CreateRentCommandHandler : ICommandHandler<CreateRentCommand, Resul
         _paymentRepository = paymentRepository;
         _unitOfWork = unitOfWork;
         _rentDomainServices = rentDomainServices;
+        _serviceBusProvider = serviceBusProvider;
     }
 
     public async Task<Result<RentPaymentData>> Handle(CreateRentCommand command,
@@ -66,6 +69,10 @@ public class CreateRentCommandHandler : ICommandHandler<CreateRentCommand, Resul
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         var result = intentPaymentsInformation.Adapt<RentPaymentData>();
+
+        var rentCreatedEmailNotification = new RentCreatedEmailNotification("user_send@email.com");
+
+        await _serviceBusProvider.SendMessage(rentCreatedEmailNotification);
 
         return Result<RentPaymentData>.Success(result);
     }

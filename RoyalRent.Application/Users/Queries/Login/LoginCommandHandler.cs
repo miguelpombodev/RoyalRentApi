@@ -2,27 +2,19 @@ using Microsoft.Extensions.Logging;
 using RoyalRent.Application.Abstractions;
 using RoyalRent.Application.Abstractions.Messaging;
 using RoyalRent.Application.Abstractions.Providers;
-using RoyalRent.Application.DTOs.Outputs;
+using RoyalRent.Application.Accounts.Queries.Login;
+using RoyalRent.Application.Users.DTOs;
 
-namespace RoyalRent.Application.Accounts.Queries.Login;
+namespace RoyalRent.Application.Users.Queries.Login;
 
-public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, Result<AuthResult>>
+public sealed class LoginCommandHandler(IAuthenticationProvider authProvider, ILogger<LoginCommandHandler> logger)
+    : ICommandHandler<LoginCommand, Result<AuthResult>>
 {
-    private readonly IAuthenticationProvider _authProvider;
-    private readonly ILogger<LoginCommandHandler> _logger;
-
-
-    public LoginCommandHandler(IAuthenticationProvider authProvider, ILogger<LoginCommandHandler> logger)
-    {
-        _authProvider = authProvider;
-        _logger = logger;
-    }
-
     public async Task<Result<AuthResult>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var result = await _authProvider.AuthenticateAsync(request.Email, request.Password);
+        var result = await authProvider.AuthenticateAsync(request.Email, request.Password);
 
-        _logger.LogInformation("User Email {Email} Account is logged!", request.Email);
+        logger.LogInformation("User Email {Email} Account is logged!", request.Email);
 
         return result;
     }

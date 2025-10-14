@@ -20,6 +20,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json"/>
       <PackageReference Include="Newtonsoft.Json" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+      <PackageReference Include="RabbitMQ.Client" />
       <PackageReference Include="StackExchange.Redis" />
       <PackageReference Include="Stripe.net" />
     </ItemGroup>

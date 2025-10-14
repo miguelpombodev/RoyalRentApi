@@ -192,7 +192,7 @@ public class AuthenticatedAccountController : ApiController
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAccountDriverLicenseInformation()
     {
-        var userEmail = _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
+        var userEmail = await _cookiesHandler.ExtractJwtTokenFromCookie(Request.Cookies);
 
         var query = new GetByEmailCommand(userEmail);
 

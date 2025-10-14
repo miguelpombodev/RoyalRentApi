@@ -1,6 +1,4 @@
-using System.Runtime.InteropServices;
-
-namespace RoyalRent.Domain.ValueObjects;
+namespace RoyalRent.Domain.Users.ValueObjects;
 
 public class Jwt
 {
